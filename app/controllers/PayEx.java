@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -43,6 +44,12 @@ import play.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * @author Gøran Schumacher (GS) / Schumacher Consulting Aps
@@ -133,8 +140,12 @@ public class PayEx extends Controller {
                         } catch (Exception e) {
 
                         }
-                        //return ok(doc2.getTextContent());
-                        return ok(s);
+                        try {
+                            return ok(getStringFromDoc(doc2));
+                        } catch(TransformerException e) {
+                            return internalServerError(e.getMessage());
+                        }
+                        //return ok(s);
                     }
                 }
         );
@@ -196,5 +207,18 @@ public class PayEx extends Controller {
         }
 
         return sb.toString();
+    }
+
+    public static String getStringFromDoc(Document doc) throws TransformerException {
+        DOMSource domSource = new DOMSource(doc);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.transform(domSource, result);
+        writer.flush();
+        return writer.toString();
     }
 }
