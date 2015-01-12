@@ -1,6 +1,6 @@
 import play.PlayJava
 
-name := "play-authenticate-usage"
+name := "VesterbronxGym"
 
 scalaVersion := "2.11.2"
 
