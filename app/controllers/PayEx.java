@@ -67,44 +67,14 @@ public class PayEx extends Controller {
     private static String PAYEX_TEST_BASE_URL = "https://test-external.payex.com";
 
     public static F.Promise<Result> CreateAgreement3(String description) {
-        WSRequestHolder holder = WS.url(PAYEX_TEST_BASE_URL + "/pxagreement/pxagreement.asmx/CreateAgreement3");
+        WSRequestHolder holder = WS.url(PAYEX_TEST_BASE_URL + "/pxagreement/pxagreement.asmx/CreateAgreement3")
+        .setTimeout(10000)
+        .setContentType("application/x-www-form-urlencoded");
 
-//        String hash = "";
-//        String hexHash = "";
-//        try {
-//            MessageDigest md5Hash = MessageDigest.getInstance("MD5");
-//            // accountNumber + merchantRef + description + purchaseOperation + maxAmount + notifyUrl + startDate + stopDate + encryptionKey
-//            md5Hash.update(PAYEX_ACCOUNTNO.getBytes());
-//            md5Hash.update(PAYEX_MERCHANTREF.getBytes());
-//            md5Hash.update(description.getBytes());
-//            md5Hash.update(PAYEX_PURCHASE_OPERATION.getBytes());
-//            md5Hash.update(PAYEX_MAXAMOUNT.getBytes());
-////            md5Hash.update("".getBytes());
-////            md5Hash.update("".getBytes());
-////            md5Hash.update("".getBytes());
-//            md5Hash.update(PAYEX_ENCRYPTIONKEY.getBytes());
-//            hash = md5Hash.digest().toString();
-//            hexHash = Hex.encodeHexString(hash.getBytes());
-//            Logger.debug("Hash:" + hash);
-//            Logger.debug("hexHash:" + hexHash);
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        }
-
-        String hash2 = getHash(PAYEX_ACCOUNTNO+PAYEX_MERCHANTREF+description+PAYEX_PURCHASE_OPERATION+PAYEX_MAXAMOUNT, PAYEX_ENCRYPTIONKEY);
-        Logger.debug("hash2:" + hash2);
-
-        WSRequestHolder complexHolder = holder.setHeader("headerKey", "headerValue")
-                .setTimeout(10000);
-//                .setQueryParameter("accountNumber", PAYEX_ACCOUNTNO)
-//                .setQueryParameter("merchantRef", PAYEX_MERCHANTREF)
-//                .setQueryParameter("description", description)
-//                .setQueryParameter("purchaseOperation", PAYEX_CONFIGURATION.getString("purchaseOperation"))
-//                .setQueryParameter("maxAmount", PAYEX_CONFIGURATION.getString("maxAmount"))
-//                .setQueryParameter("notifyUrl", "")             // Deprecated, set to blank according to documentation.
-//                .setQueryParameter("startDate", "")             // Can be blank, set to blank according to documentation.
-//                .setQueryParameter("stopDate", "")               // Can be blank, set to blank according to documentation.
-//                .setQueryParameter("hash", hash2);
+        String hash = getHash(PAYEX_ACCOUNTNO+PAYEX_MERCHANTREF+description+PAYEX_PURCHASE_OPERATION+PAYEX_MAXAMOUNT, PAYEX_ENCRYPTIONKEY);
+        //Logger.debug("hash2:" + hash2);
+        //
+        //WSRequestHolder complexHolder = holder.setTimeout(10000);
 
         StringBuffer body = new StringBuffer();
         body.append("accountNumber="+ PAYEX_ACCOUNTNO);
@@ -115,40 +85,16 @@ public class PayEx extends Controller {
         body.append("&notifyUrl="+ "");
         body.append("&startDate="+ "");
         body.append("&stopDate="+ "");
-        body.append("&hash="+ hash2);
+        body.append("&hash="+ hash);
+        //
+        //holder.setContentType("application/x-www-form-urlencoded");
 
-        complexHolder.setContentType("application/x-www-form-urlencoded");
+        F.Promise<Document> documentPromise = getDocumentPromiseFromWSPost(holder, body);
 
-        F.Promise<Document> documentPromise = complexHolder.post(body.toString()).map(
-                new F.Function<WSResponse, Document>() {
-                    public Document apply(WSResponse response) {
-                        Logger.debug(response.getBody().toString());
-                        Document xml = response.asXml();
-                        return xml;
-                    }
-                }
-        );
-        F.Promise<Result> promiseOfResult = documentPromise.map(
-                new F.Function<Document,Result>() {
-                    public Result apply(Document doc1) {
-                        String s = doc1.getChildNodes().item(0).getTextContent();
-                        Document doc2 = null;
-                        try {
-                            doc2 = parseStringToXMLDocument(s);
-                            NodeList nodeList = doc2.getElementsByTagName("agreementRef");
-                            Logger.debug("agreementRef: " + nodeList.item(0).getTextContent());
-                        } catch (Exception e) {
+        //NodeList nodeList = doc2.getElementsByTagName("agreementRef");
+        //Logger.debug("agreementRef: " + nodeList.item(0).getTextContent());
 
-                        }
-                        try {
-                            return ok(getStringFromDoc(doc2));
-                        } catch(TransformerException e) {
-                            return internalServerError(e.getMessage());
-                        }
-                        //return ok(s);
-                    }
-                }
-        );
+        F.Promise<Result> promiseOfResult = getResultPromiseFromDocumentPromise(documentPromise);
 
         /*
         F.Promise<String> documentPromise = complexHolder.post(body.toString()).map(
@@ -168,6 +114,39 @@ public class PayEx extends Controller {
         );*/
 
         return  promiseOfResult;
+    }
+
+    private static F.Promise<Document> getDocumentPromiseFromWSPost(WSRequestHolder complexHolder, StringBuffer body) {
+        return complexHolder.post(body.toString()).map(
+                    new F.Function<WSResponse, Document>() {
+                        public Document apply(WSResponse response) {
+                            Logger.debug(response.getBody().toString());
+                            Document xml = response.asXml();
+                            return xml;
+                        }
+                    }
+            );
+    }
+
+    private static F.Promise<Result> getResultPromiseFromDocumentPromise(F.Promise<Document> documentPromise) {
+        return documentPromise.map(
+                    new F.Function<Document,Result>() {
+                        public Result apply(Document doc1) {
+                            String s = doc1.getChildNodes().item(0).getTextContent();
+                            Document doc2 = null;
+                            try {
+                                doc2 = parseStringToXMLDocument(s);
+                            } catch (Exception e) {
+
+                            }
+                            try {
+                                return ok(getStringFromDoc(doc2));
+                            } catch(TransformerException e) {
+                                return internalServerError(e.getMessage());
+                            }
+                        }
+                    }
+            );
     }
 
     private static Document parseStringToXMLDocument(String xmlString) throws ParserConfigurationException, SAXException, IOException {
