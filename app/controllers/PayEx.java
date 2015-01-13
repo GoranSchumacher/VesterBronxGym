@@ -76,7 +76,7 @@ public class PayEx extends Controller {
         return getDocumentPromiseFromWSPost(holder, body);
     }
 
-    public static F.Promise<Result> createAgreement3ANDInitialize8(Long price, Integer vat, String orderID,
+    public static Result  createAgreement3ANDInitialize8(Long price, Integer vat, String orderID,
             String productNumber, String description) {
 
         String clientIPAddress = request().remoteAddress();
@@ -84,19 +84,23 @@ public class PayEx extends Controller {
 
         F.Promise<Node> createAgreement3DocumentPromise = getCreateAgreement3AsDocumentPromise(description);
 
-        Document doc2 = getDocument(createAgreement3DocumentPromise, 10000);
+        Document createAgreementDoc = getDocument(createAgreement3DocumentPromise, 10000);
 
-        String agreementRef = XPath.selectNode("payex//agreementRef", doc2).getTextContent();
+        String agreementRef = XPath.selectNode("payex//agreementRef", createAgreementDoc).getTextContent();
         Logger.debug("agreementRef from call createAgreement3: " + agreementRef);
 
 
-        F.Promise<Node> documentPromise = getInitialize8AsDocumentPromise(price, vat, orderID,
+        F.Promise<Node> Initialize8Promise = getInitialize8AsDocumentPromise(price, vat, orderID,
                 productNumber, description, clientIPAddress, agreementRef);
-        F.Promise<Result> promiseOfResult = getResultPromiseFromDocumentPromise(documentPromise);
+
+        Document initialize8tDoc = getDocument(Initialize8Promise, 10000);
+        String redirectUrl = XPath.selectNode("payex//redirectUrl", initialize8tDoc).getTextContent();
+
+        //F.Promise<Result> promiseOfResult = getResultPromiseFromDocumentPromise(Initialize8Promise);
+        //return  promiseOfResult;
 
         // Here we should redirect
-
-        return  promiseOfResult;
+        return redirect(redirectUrl);
     }
 
     private static F.Promise<Node> getInitialize8AsDocumentPromise(Long price, Integer vat, String orderID,
