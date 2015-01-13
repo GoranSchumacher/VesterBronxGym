@@ -122,17 +122,18 @@ public class PayEx extends Controller {
         F.Promise<Node> createAgreement3DocumentPromise = getCreateAgreement3AsDocumentPromise(description);
 
         Node dom = createAgreement3DocumentPromise.get(10000);
-        try {
+        /*try {
             Logger.debug("Doc: " + getStringFromDoc(dom));
         } catch (Exception e) {
 
-        }
+        }*/
 
-        NodeList childNodes = dom.getChildNodes();
+        //NodeList childNodes = dom.getChildNodes();
         //Node stringNode = findChildNode(childNodes, "string");
         Document doc2 = null;
         try {
-            doc2 = parseStringToXMLDocument(childNodes.item(0).getTextContent());
+            //doc2 = parseStringToXMLDocument(childNodes.item(0).getTextContent());
+            doc2 = parseStringToXMLDocument(dom.getTextContent());
         } catch(Exception e) {
 
         }
@@ -231,7 +232,7 @@ public class PayEx extends Controller {
                         public Node apply(WSResponse response) {
                             Logger.debug(response.getBody().toString());
                             Document xml = response.asXml();
-                            Node xml2 = xml.getChildNodes().item(0);
+                            Node xml2 = xml.getChildNodes().item(0).getChildNodes().item(0);
                             return xml2;
                         }
                     }
@@ -242,7 +243,7 @@ public class PayEx extends Controller {
         return documentPromise.map(
                     new F.Function<Node,Result>() {
                         public Result apply(Node doc1) {
-                            String s = doc1.getChildNodes().item(0).getTextContent();
+                            String s = doc1.getTextContent();
                             Document doc2 = null;
                             try {
                                 doc2 = parseStringToXMLDocument(s);
