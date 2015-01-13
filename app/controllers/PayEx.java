@@ -1,48 +1,19 @@
 package controllers;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import models.User;
-import org.apache.commons.codec.binary.Hex;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import play.Configuration;
+import play.Logger;
 import play.Play;
-import play.Routes;
-import play.api.*;
-import play.data.Form;
 import play.libs.F;
 import play.libs.XPath;
 import play.libs.ws.WS;
 import play.libs.ws.WSRequestHolder;
 import play.libs.ws.WSResponse;
-import play.mvc.*;
-import play.mvc.Http.Response;
-import play.mvc.Http.Session;
+import play.mvc.Controller;
 import play.mvc.Result;
-import providers.MyUsernamePasswordAuthProvider;
-import providers.MyUsernamePasswordAuthProvider.MyLogin;
-import providers.MyUsernamePasswordAuthProvider.MySignup;
-
-import views.html.*;
-import be.objectify.deadbolt.java.actions.Group;
-import be.objectify.deadbolt.java.actions.Restrict;
-
-import com.feth.play.module.pa.PlayAuthenticate;
-import com.feth.play.module.pa.providers.password.UsernamePasswordAuthProvider;
-import com.feth.play.module.pa.user.AuthUser;
-import play.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -53,6 +24,11 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @author Gøran Schumacher (GS) / Schumacher Consulting Aps
@@ -67,9 +43,6 @@ public class PayEx extends Controller {
     private static String PAYEX_MAXAMOUNT = PAYEX_CONFIGURATION.getString("maxAmount");
     private static String PAYEX_ENCRYPTIONKEY = PAYEX_CONFIGURATION.getString("encryptionKey");
     private static String PAYEX_TEST_BASE_URL = "https://test-external.payex.com";
-
-
-
     private static String PAYEX_CURRENCY = PAYEX_CONFIGURATION.getString("currency");
     private static String PAYEX_INITIALIZE_RETURNURL = PAYEX_CONFIGURATION.getString("initialize_returnurl");
     private static String PAYEX_INITIALIZE_CANCELURL = PAYEX_CONFIGURATION.getString("initialize_cancelurl");
@@ -103,16 +76,6 @@ public class PayEx extends Controller {
         return getDocumentPromiseFromWSPost(holder, body);
     }
 
-
-
-
-
-
-
-
-
-    //public static F.Promise<Result> CreateAgreement3ANDInitialize8(Long price, Integer vat, String currency, String orderID,
-    //              String productNumber, String description, String clientIPAddress, String agreementRef) {
     public static F.Promise<Result> createAgreement3ANDInitialize8(Long price, Integer vat, String orderID,
             String productNumber, String description) {
 
@@ -122,36 +85,14 @@ public class PayEx extends Controller {
         F.Promise<Node> createAgreement3DocumentPromise = getCreateAgreement3AsDocumentPromise(description);
 
         Node dom = createAgreement3DocumentPromise.get(10000);
-        /*try {
-            Logger.debug("Doc: " + getStringFromDoc(dom));
-        } catch (Exception e) {
-
-        }*/
-
-        //NodeList childNodes = dom.getChildNodes();
-        //Node stringNode = findChildNode(childNodes, "string");
         Document doc2 = null;
         try {
-            //doc2 = parseStringToXMLDocument(childNodes.item(0).getTextContent());
             doc2 = parseStringToXMLDocument(dom.getTextContent());
         } catch(Exception e) {
 
         }
 
-        //Node stringNode = XPath.selectNode("string", dom);
-        //Logger.debug("stringNode: " + stringNode);
-        //Node payexNode = XPath.selectNode("payex", doc2);
-        //Logger.debug("payexNode: " + payexNode);
-        //Node agreementNode = XPath.selectNode("agreementRef", payexNode);
-        //Logger.debug("agreementNode: " + agreementNode);
         String agreementRef = XPath.selectNode("payex//agreementRef", doc2).getTextContent();
-
-        /*
-        NodeList payExElement = createAgreement3DocumentPromise.get(10000).getElementsByTagName("payex");
-        Logger.debug("payExElement: " + payExElement);
-        Node node0 = payExElement.item(0);
-        Logger.debug("node0: " + node0);
-        String agreementRef = node0.get.getElementById("agreementRef").getTextContent();*/
         Logger.debug("agreementRef from call createAgreement3: " + agreementRef);
 
 
@@ -163,19 +104,6 @@ public class PayEx extends Controller {
 
         return  promiseOfResult;
     }
-
-    /*
-    private static Node findChildNode(NodeList childNodes, String nodeName) {
-        for(int i = 0; i < childNodes.getLength(); i++) {
-            Node child = childNodes.item(i);
-            Logger.debug("NodeName:" + child.getNodeName());
-            Logger.debug("NodeText:" + child.getTextContent());
-            if(child.getNodeName().equalsIgnoreCase(nodeName)) {
-                return child;
-            }
-        }
-        return null;
-    }*/
 
     private static F.Promise<Node> getInitialize8AsDocumentPromise(Long price, Integer vat, String orderID,
                    String productNumber, String description, String clientIPAddress, String agreementRef) {
@@ -197,25 +125,13 @@ public class PayEx extends Controller {
         body.append("&vat="+ vat);
         body.append("&orderID="+ orderID);
         body.append("&productNumber="+ productNumber);
-
-
-
-
         body.append("&description="+ description);
-
-
-
         body.append("&clientIPAddress="+ clientIPAddress);
         body.append("&clientIdentifier="+ "");
         body.append("&additionalValues="+ "");
         body.append("&externalID="+ "");
         body.append("&returnUrl="+ PAYEX_INITIALIZE_RETURNURL);
         body.append("&view="+ PAYEX_VIEW);
-
-
-
-
-
         body.append("&agreementRef="+ agreementRef);
         body.append("&cancelUrl="+ PAYEX_INITIALIZE_CANCELURL);
         body.append("&clientLanguage="+ PAYEX_CLIENTLANGUAGE);
