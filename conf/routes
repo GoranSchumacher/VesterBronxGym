@@ -46,6 +46,10 @@ POST        /login/password/forgot                 controllers.Signup.doForgotPa
 ### PayEx Controller
 GET         /createAgreement/:description          controllers.PayEx.CreateAgreement3(description)
 
+## Long price, Integer vat, String, String orderID, String productNumber, String description
+## http://localhost:9000/test/399/80/1234/98765/Enfedprodukt
+GET         /test/:price/:vat/:orderId/:productNumber/:description                                  controllers.PayEx.createAgreement3ANDInitialize8(price : Long, vat : Int, orderId, productNumber, description)
+
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                          controllers.Assets.at(path="/public", file)
 GET         /webjars/*file                         controllers.WebJarAssets.at(file)

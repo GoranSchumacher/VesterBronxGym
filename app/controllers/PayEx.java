@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import models.User;
 import org.apache.commons.codec.binary.Hex;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -21,6 +23,7 @@ import play.Routes;
 import play.api.*;
 import play.data.Form;
 import play.libs.F;
+import play.libs.XPath;
 import play.libs.ws.WS;
 import play.libs.ws.WSRequestHolder;
 import play.libs.ws.WSResponse;
@@ -63,75 +66,182 @@ public class PayEx extends Controller {
     private static String PAYEX_PURCHASE_OPERATION = PAYEX_CONFIGURATION.getString("purchaseOperation");
     private static String PAYEX_MAXAMOUNT = PAYEX_CONFIGURATION.getString("maxAmount");
     private static String PAYEX_ENCRYPTIONKEY = PAYEX_CONFIGURATION.getString("encryptionKey");
-
     private static String PAYEX_TEST_BASE_URL = "https://test-external.payex.com";
 
+
+
+    private static String PAYEX_CURRENCY = PAYEX_CONFIGURATION.getString("currency");
+    private static String PAYEX_INITIALIZE_RETURNURL = PAYEX_CONFIGURATION.getString("initialize_returnurl");
+    private static String PAYEX_INITIALIZE_CANCELURL = PAYEX_CONFIGURATION.getString("initialize_cancelurl");
+    private static String PAYEX_VIEW = PAYEX_CONFIGURATION.getString("view");
+    private static String PAYEX_CLIENTLANGUAGE = PAYEX_CONFIGURATION.getString("client_language");
+
     public static F.Promise<Result> CreateAgreement3(String description) {
+        F.Promise<Node> documentPromise = getCreateAgreement3AsDocumentPromise(description);
+        F.Promise<Result> promiseOfResult = getResultPromiseFromDocumentPromise(documentPromise);
+        return  promiseOfResult;
+    }
+
+    private static F.Promise<Node> getCreateAgreement3AsDocumentPromise(String description) {
         WSRequestHolder holder = WS.url(PAYEX_TEST_BASE_URL + "/pxagreement/pxagreement.asmx/CreateAgreement3")
         .setTimeout(10000)
         .setContentType("application/x-www-form-urlencoded");
 
         String hash = getHash(PAYEX_ACCOUNTNO+PAYEX_MERCHANTREF+description+PAYEX_PURCHASE_OPERATION+PAYEX_MAXAMOUNT, PAYEX_ENCRYPTIONKEY);
-        //Logger.debug("hash2:" + hash2);
-        //
-        //WSRequestHolder complexHolder = holder.setTimeout(10000);
 
         StringBuffer body = new StringBuffer();
         body.append("accountNumber="+ PAYEX_ACCOUNTNO);
         body.append("&merchantRef="+ PAYEX_MERCHANTREF);
         body.append("&description="+ description);
-        body.append("&purchaseOperation="+ PAYEX_CONFIGURATION.getString("purchaseOperation"));
-        body.append("&maxAmount="+ PAYEX_CONFIGURATION.getString("maxAmount"));
+        body.append("&purchaseOperation="+ PAYEX_PURCHASE_OPERATION);
+        body.append("&maxAmount="+ PAYEX_MAXAMOUNT);
         body.append("&notifyUrl="+ "");
         body.append("&startDate="+ "");
         body.append("&stopDate="+ "");
         body.append("&hash="+ hash);
-        //
-        //holder.setContentType("application/x-www-form-urlencoded");
 
-        F.Promise<Document> documentPromise = getDocumentPromiseFromWSPost(holder, body);
+        return getDocumentPromiseFromWSPost(holder, body);
+    }
 
-        //NodeList nodeList = doc2.getElementsByTagName("agreementRef");
-        //Logger.debug("agreementRef: " + nodeList.item(0).getTextContent());
 
-        F.Promise<Result> promiseOfResult = getResultPromiseFromDocumentPromise(documentPromise);
+
+
+
+
+
+
+
+    //public static F.Promise<Result> CreateAgreement3ANDInitialize8(Long price, Integer vat, String currency, String orderID,
+    //              String productNumber, String description, String clientIPAddress, String agreementRef) {
+    public static F.Promise<Result> createAgreement3ANDInitialize8(Long price, Integer vat, String orderID,
+            String productNumber, String description) {
+
+        String clientIPAddress = request().remoteAddress();
+        Logger.debug("clientIPAddress: " +clientIPAddress);
+
+        F.Promise<Node> createAgreement3DocumentPromise = getCreateAgreement3AsDocumentPromise(description);
+
+        Node dom = createAgreement3DocumentPromise.get(10000);
+        try {
+            Logger.debug("Doc: " + getStringFromDoc(dom));
+        } catch (Exception e) {
+
+        }
+
+        NodeList childNodes = dom.getChildNodes();
+        //Node stringNode = findChildNode(childNodes, "string");
+        Document doc2 = null;
+        try {
+            doc2 = parseStringToXMLDocument(childNodes.item(0).getTextContent());
+        } catch(Exception e) {
+
+        }
+
+        //Node stringNode = XPath.selectNode("string", dom);
+        //Logger.debug("stringNode: " + stringNode);
+        //Node payexNode = XPath.selectNode("payex", doc2);
+        //Logger.debug("payexNode: " + payexNode);
+        //Node agreementNode = XPath.selectNode("agreementRef", payexNode);
+        //Logger.debug("agreementNode: " + agreementNode);
+        String agreementRef = XPath.selectNode("payex//agreementRef", doc2).getTextContent();
 
         /*
-        F.Promise<String> documentPromise = complexHolder.post(body.toString()).map(
-                new F.Function<WSResponse, String>() {
-                    public String apply(WSResponse response) {
-                        Logger.debug(response.getBody().toString());
-                        return response.getBody().toString();
-                    }
-                }
-        );
-        F.Promise<Result> promiseOfResult = documentPromise.map(
-                new F.Function<String,Result>() {
-                    public Result apply(String doc) {
-                        return ok(doc);
-                    }
-                }
-        );*/
+        NodeList payExElement = createAgreement3DocumentPromise.get(10000).getElementsByTagName("payex");
+        Logger.debug("payExElement: " + payExElement);
+        Node node0 = payExElement.item(0);
+        Logger.debug("node0: " + node0);
+        String agreementRef = node0.get.getElementById("agreementRef").getTextContent();*/
+        Logger.debug("agreementRef from call createAgreement3: " + agreementRef);
+
+
+        F.Promise<Node> documentPromise = getInitialize8AsDocumentPromise(price, vat, orderID,
+                productNumber, description, clientIPAddress, agreementRef);
+        F.Promise<Result> promiseOfResult = getResultPromiseFromDocumentPromise(documentPromise);
+
+        // Here we should redirect
 
         return  promiseOfResult;
     }
 
-    private static F.Promise<Document> getDocumentPromiseFromWSPost(WSRequestHolder complexHolder, StringBuffer body) {
+    /*
+    private static Node findChildNode(NodeList childNodes, String nodeName) {
+        for(int i = 0; i < childNodes.getLength(); i++) {
+            Node child = childNodes.item(i);
+            Logger.debug("NodeName:" + child.getNodeName());
+            Logger.debug("NodeText:" + child.getTextContent());
+            if(child.getNodeName().equalsIgnoreCase(nodeName)) {
+                return child;
+            }
+        }
+        return null;
+    }*/
+
+    private static F.Promise<Node> getInitialize8AsDocumentPromise(Long price, Integer vat, String orderID,
+                   String productNumber, String description, String clientIPAddress, String agreementRef) {
+        WSRequestHolder holder = WS.url(PAYEX_TEST_BASE_URL + "/pxorder/pxorder.asmx/Initialize8")
+                .setTimeout(10000)
+                .setContentType("application/x-www-form-urlencoded");
+
+        // accountNumber + purchaseOperation + price + priceArgList + currency + vat + orderID + productNumber +
+        // description + clientIPAddress + clientIdentifier + additionalValues + externalID + returnUrl + view + agreementRef + cancelUrl + clientLanguageAll
+        String hash = getHash(PAYEX_ACCOUNTNO+PAYEX_PURCHASE_OPERATION+price+"" + PAYEX_CURRENCY + vat + orderID + productNumber +
+                description + clientIPAddress + "" + "" + "" + PAYEX_INITIALIZE_RETURNURL + PAYEX_VIEW + agreementRef + PAYEX_INITIALIZE_CANCELURL + PAYEX_CLIENTLANGUAGE, PAYEX_ENCRYPTIONKEY);
+
+        StringBuffer body = new StringBuffer();
+        body.append("accountNumber="+ PAYEX_ACCOUNTNO);
+        body.append("&purchaseOperation="+ PAYEX_PURCHASE_OPERATION);
+        body.append("&price="+ price);
+        body.append("&priceArgList="+ "");
+        body.append("&currency="+ PAYEX_CURRENCY);
+        body.append("&vat="+ vat);
+        body.append("&orderID="+ orderID);
+        body.append("&productNumber="+ productNumber);
+
+
+
+
+        body.append("&description="+ description);
+
+
+
+        body.append("&clientIPAddress="+ clientIPAddress);
+        body.append("&clientIdentifier="+ "");
+        body.append("&additionalValues="+ "");
+        body.append("&externalID="+ "");
+        body.append("&returnUrl="+ PAYEX_INITIALIZE_RETURNURL);
+        body.append("&view="+ PAYEX_VIEW);
+
+
+
+
+
+        body.append("&agreementRef="+ agreementRef);
+        body.append("&cancelUrl="+ PAYEX_INITIALIZE_CANCELURL);
+        body.append("&clientLanguage="+ PAYEX_CLIENTLANGUAGE);
+        body.append("&hash="+ hash);
+
+        return getDocumentPromiseFromWSPost(holder, body);
+    }
+
+    //////////////////// GENERAL UTILITIES ////////////////////
+
+    private static F.Promise<Node> getDocumentPromiseFromWSPost(WSRequestHolder complexHolder, StringBuffer body) {
         return complexHolder.post(body.toString()).map(
-                    new F.Function<WSResponse, Document>() {
-                        public Document apply(WSResponse response) {
+                    new F.Function<WSResponse, Node>() {
+                        public Node apply(WSResponse response) {
                             Logger.debug(response.getBody().toString());
                             Document xml = response.asXml();
-                            return xml;
+                            Node xml2 = xml.getChildNodes().item(0);
+                            return xml2;
                         }
                     }
             );
     }
 
-    private static F.Promise<Result> getResultPromiseFromDocumentPromise(F.Promise<Document> documentPromise) {
+    private static F.Promise<Result> getResultPromiseFromDocumentPromise(F.Promise<Node> documentPromise) {
         return documentPromise.map(
-                    new F.Function<Document,Result>() {
-                        public Result apply(Document doc1) {
+                    new F.Function<Node,Result>() {
+                        public Result apply(Node doc1) {
                             String s = doc1.getChildNodes().item(0).getTextContent();
                             Document doc2 = null;
                             try {
@@ -188,7 +298,7 @@ public class PayEx extends Controller {
         return sb.toString();
     }
 
-    public static String getStringFromDoc(Document doc) throws TransformerException {
+    public static String getStringFromDoc(Node doc) throws TransformerException {
         DOMSource domSource = new DOMSource(doc);
         StringWriter writer = new StringWriter();
         StreamResult result = new StreamResult(writer);
