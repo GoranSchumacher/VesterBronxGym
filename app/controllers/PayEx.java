@@ -50,8 +50,11 @@ public class PayEx extends Controller {
     private static String PAYEX_CLIENTLANGUAGE = PAYEX_CONFIGURATION.getString("client_language");
 
     public static F.Promise<Result> CreateAgreement3(String description) {
-        F.Promise<Node> documentPromise = getCreateAgreement3AsDocumentPromise(description);
-        F.Promise<Result> promiseOfResult = getResultPromiseFromDocumentPromise(documentPromise);
+        F.Promise<Node> createAgreement3DocPromise = getCreateAgreement3AsDocumentPromise(description);
+        Document createAgreementDoc = getDocument(createAgreement3DocPromise, 10000);
+        String errorCode = XPath.selectNode("payex//errorCode", createAgreementDoc).getTextContent();
+        Logger.debug("createAgreement3 errorCode: " + errorCode);
+        F.Promise<Result> promiseOfResult = getResultPromiseFromDocumentPromise(createAgreement3DocPromise);
         return  promiseOfResult;
     }
 
@@ -82,21 +85,23 @@ public class PayEx extends Controller {
         String clientIPAddress = request().remoteAddress();
         Logger.debug("clientIPAddress: " +clientIPAddress);
 
-        F.Promise<Node> createAgreement3DocumentPromise = getCreateAgreement3AsDocumentPromise(description);
-
-        Document createAgreementDoc = getDocument(createAgreement3DocumentPromise, 10000);
-
+        // Fetch createAgreement3
+        F.Promise<Node> createAgreement3DocPromise = getCreateAgreement3AsDocumentPromise(description);
+        Document createAgreementDoc = getDocument(createAgreement3DocPromise, 10000);
+        String errorCode = XPath.selectNode("payex//errorCode", createAgreementDoc).getTextContent();
+        Logger.debug("createAgreement3 errorCode: " + errorCode);
         String agreementRef = XPath.selectNode("payex//agreementRef", createAgreementDoc).getTextContent();
         Logger.debug("agreementRef from call createAgreement3: " + agreementRef);
 
-
-        F.Promise<Node> Initialize8Promise = getInitialize8AsDocumentPromise(price, vat, orderID,
+        // Fetch initialize8
+        F.Promise<Node> initialize8DocPromise = getInitialize8AsDocumentPromise(price, vat, orderID,
                 productNumber, description, clientIPAddress, agreementRef);
-
-        Document initialize8tDoc = getDocument(Initialize8Promise, 10000);
+        Document initialize8tDoc = getDocument(initialize8DocPromise, 10000);
+        String errorCode2 = XPath.selectNode("payex//errorCode", createAgreementDoc).getTextContent();
+        Logger.debug("initialize8 errorCode: " + errorCode2);
         String redirectUrl = XPath.selectNode("payex//redirectUrl", initialize8tDoc).getTextContent();
 
-        //F.Promise<Result> promiseOfResult = getResultPromiseFromDocumentPromise(Initialize8Promise);
+        //F.Promise<Result> promiseOfResult = getResultPromiseFromDocumentPromise(initialize8DocPromise);
         //return  promiseOfResult;
 
         // Here we should redirect
@@ -109,8 +114,6 @@ public class PayEx extends Controller {
                 .setTimeout(10000)
                 .setContentType("application/x-www-form-urlencoded");
 
-        // accountNumber + purchaseOperation + price + priceArgList + currency + vat + orderID + productNumber +
-        // description + clientIPAddress + clientIdentifier + additionalValues + externalID + returnUrl + view + agreementRef + cancelUrl + clientLanguageAll
         String hash = getHash(PAYEX_ACCOUNTNO+PAYEX_PURCHASE_OPERATION+price+"" + PAYEX_CURRENCY + vat + orderID + productNumber +
                 description + clientIPAddress + "" + "" + "" + PAYEX_INITIALIZE_RETURNURL + PAYEX_VIEW + agreementRef + PAYEX_INITIALIZE_CANCELURL + PAYEX_CLIENTLANGUAGE, PAYEX_ENCRYPTIONKEY);
 
