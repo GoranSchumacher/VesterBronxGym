@@ -84,13 +84,7 @@ public class PayEx extends Controller {
 
         F.Promise<Node> createAgreement3DocumentPromise = getCreateAgreement3AsDocumentPromise(description);
 
-        Node dom = createAgreement3DocumentPromise.get(10000);
-        Document doc2 = null;
-        try {
-            doc2 = parseStringToXMLDocument(dom.getTextContent());
-        } catch(Exception e) {
-
-        }
+        Document doc2 = getDocument(createAgreement3DocumentPromise, 10000);
 
         String agreementRef = XPath.selectNode("payex//agreementRef", doc2).getTextContent();
         Logger.debug("agreementRef from call createAgreement3: " + agreementRef);
@@ -141,6 +135,17 @@ public class PayEx extends Controller {
     }
 
     //////////////////// GENERAL UTILITIES ////////////////////
+
+    private static Document getDocument(F.Promise<Node> promiseNode, long timeout) {
+        Node dom = promiseNode.get(timeout);
+        Document doc2 = null;
+        try {
+            doc2 = parseStringToXMLDocument(dom.getTextContent());
+        } catch(Exception e) {
+
+        }
+        return doc2;
+    }
 
     private static F.Promise<Node> getDocumentPromiseFromWSPost(WSRequestHolder complexHolder, StringBuffer body) {
         return complexHolder.post(body.toString()).map(
