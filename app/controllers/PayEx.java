@@ -100,6 +100,7 @@ public class PayEx extends Controller {
         String errorCode2 = XPath.selectNode("payex//errorCode", createAgreementDoc).getTextContent();
         Logger.debug("initialize8 errorCode: " + errorCode2);
         String redirectUrl = XPath.selectNode("payex//redirectUrl", initialize8tDoc).getTextContent();
+        Logger.debug("initialize8 redirectUrl: " + redirectUrl);
 
         //F.Promise<Result> promiseOfResult = getResultPromiseFromDocumentPromise(initialize8DocPromise);
         //return  promiseOfResult;
