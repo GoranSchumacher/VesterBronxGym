@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -44,8 +45,8 @@ public class PayEx extends Controller {
     private static String PAYEX_ENCRYPTIONKEY = PAYEX_CONFIGURATION.getString("encryptionKey");
     private static String PAYEX_TEST_BASE_URL = "https://test-external.payex.com";
     private static String PAYEX_CURRENCY = PAYEX_CONFIGURATION.getString("currency");
-    private static String PAYEX_INITIALIZE_RETURNURL = PAYEX_CONFIGURATION.getString("initialize_returnurl");
-    private static String PAYEX_INITIALIZE_CANCELURL = PAYEX_CONFIGURATION.getString("initialize_cancelurl");
+    //private static String PAYEX_INITIALIZE_RETURNURL = PAYEX_CONFIGURATION.getString("initialize_returnurl");
+    //private static String PAYEX_INITIALIZE_CANCELURL = PAYEX_CONFIGURATION.getString("initialize_cancelurl");
     private static String PAYEX_VIEW = PAYEX_CONFIGURATION.getString("view");
     private static String PAYEX_CLIENTLANGUAGE = PAYEX_CONFIGURATION.getString("client_language");
 
@@ -63,10 +64,10 @@ public class PayEx extends Controller {
         .setTimeout(10000)
         .setContentType("application/x-www-form-urlencoded");
 
-        String hash = getHash(PAYEX_ACCOUNTNO+PAYEX_MERCHANTREF+description+PAYEX_PURCHASE_OPERATION+PAYEX_MAXAMOUNT, PAYEX_ENCRYPTIONKEY);
+        String hash = getHash(PAYEX_ACCOUNTNO + PAYEX_MERCHANTREF + description + PAYEX_PURCHASE_OPERATION + PAYEX_MAXAMOUNT, PAYEX_ENCRYPTIONKEY);
 
         StringBuffer body = new StringBuffer();
-        body.append("accountNumber="+ PAYEX_ACCOUNTNO);
+        body.append("accountNumber=" + PAYEX_ACCOUNTNO);
         body.append("&merchantRef="+ PAYEX_MERCHANTREF);
         body.append("&description="+ description);
         body.append("&purchaseOperation="+ PAYEX_PURCHASE_OPERATION);
@@ -82,12 +83,12 @@ public class PayEx extends Controller {
     public static Result  createAgreement3ANDInitialize8(Long price, Integer vat, String orderID,
             String productNumber, String description) {
 
-        String clientIPAddress = request().remoteAddress();
-        Logger.debug("clientIPAddress(As reported from Heroku): " +clientIPAddress);
-        clientIPAddress = "80.163.27.89";
-        Logger.debug("clientIPAddress(Hard coded to GS TDC abo): " +clientIPAddress);
-        clientIPAddress = request().getHeader("X-Forwarded-For");
-        Logger.debug("clientIPAddress(X-Forwarded-): " +clientIPAddress);
+        //String clientIPAddress = request().remoteAddress();
+        //Logger.debug("clientIPAddress(As reported from Heroku): " +clientIPAddress);
+        //clientIPAddress = "80.163.27.89";
+        //Logger.debug("clientIPAddress(Hard coded to GS TDC abo): " +clientIPAddress);
+        String clientIPAddress = request().getHeader("X-Forwarded-For");
+        Logger.debug("clientIPAddress(X-Forwarded-For): " +clientIPAddress);
 
         // Fetch createAgreement3
         F.Promise<Node> createAgreement3DocPromise = getCreateAgreement3AsDocumentPromise(description);
@@ -123,31 +124,50 @@ public class PayEx extends Controller {
                 .setTimeout(10000)
                 .setContentType("application/x-www-form-urlencoded");
 
+        String returnUrl = routes.PayEx.initialize8ReturnUrlCalled("NotSetYet").absoluteURL(request());
+        Logger.debug("returnUrl: " + returnUrl);
+        String cancelUrl = routes.PayEx.initialize8CancelUrlCalled().absoluteURL(request());
+        Logger.debug("cancelUrl: " + cancelUrl);
+
         String hash = getHash(PAYEX_ACCOUNTNO+PAYEX_PURCHASE_OPERATION+price+"" + PAYEX_CURRENCY + vat + orderID + productNumber +
-                description + clientIPAddress + "" + "" + "" + PAYEX_INITIALIZE_RETURNURL + PAYEX_VIEW + agreementRef + PAYEX_INITIALIZE_CANCELURL + PAYEX_CLIENTLANGUAGE, PAYEX_ENCRYPTIONKEY);
+                description + clientIPAddress + "" + "" + "" + returnUrl + PAYEX_VIEW + agreementRef + cancelUrl + PAYEX_CLIENTLANGUAGE, PAYEX_ENCRYPTIONKEY);
+
 
         StringBuffer body = new StringBuffer();
         body.append("accountNumber="+ PAYEX_ACCOUNTNO);
         body.append("&purchaseOperation="+ PAYEX_PURCHASE_OPERATION);
         body.append("&price="+ price);
-        body.append("&priceArgList="+ "");
+        body.append("&priceArgList=" + "");
         body.append("&currency="+ PAYEX_CURRENCY);
         body.append("&vat="+ vat);
         body.append("&orderID="+ orderID);
         body.append("&productNumber="+ productNumber);
-        body.append("&description="+ description);
+        body.append("&description=" + description);
         body.append("&clientIPAddress="+ clientIPAddress);
-        body.append("&clientIdentifier="+ "");
+        body.append("&clientIdentifier=" + "");
         body.append("&additionalValues="+ "");
         body.append("&externalID="+ "");
-        body.append("&returnUrl="+ PAYEX_INITIALIZE_RETURNURL);
+        //body.append("&cancelUrl="+ PAYEX_INITIALIZE_RETURNURL);
+        body.append("&returnUrl="+ returnUrl);
         body.append("&view="+ PAYEX_VIEW);
-        body.append("&agreementRef="+ agreementRef);
-        body.append("&cancelUrl="+ PAYEX_INITIALIZE_CANCELURL);
+        body.append("&agreementRef=" + agreementRef);
+        //body.append("&cancelUrl="+ PAYEX_INITIALIZE_CANCELURL);
+        body.append("&cancelUrl=" + cancelUrl);
+
         body.append("&clientLanguage="+ PAYEX_CLIENTLANGUAGE);
-        body.append("&hash="+ hash);
+        body.append("&hash=" + hash);
 
         return getDocumentPromiseFromWSPost(holder, body);
+    }
+
+    public static Result initialize8ReturnUrlCalled(String orderRef) {
+        return ok("returnUrl called with orderRef: " + orderRef);
+
+    }
+
+    public static Result initialize8CancelUrlCalled() {
+        return ok("cancelUrl called!!!");
+
     }
 
     //////////////////// GENERAL UTILITIES ////////////////////
