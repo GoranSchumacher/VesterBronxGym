@@ -184,10 +184,14 @@ public class PayEx extends Controller {
     }
 
     private static F.Promise<Node> getDocumentPromiseFromWSPost(WSRequestHolder complexHolder, StringBuffer body) {
+        Logger.debug("  ");
+        Logger.debug("  ");
+        Logger.debug("POST call to: " + complexHolder.getUrl());
+        Logger.debug("        Body: " + body.toString());
         return complexHolder.post(body.toString()).map(
                     new F.Function<WSResponse, Node>() {
                         public Node apply(WSResponse response) {
-                            Logger.debug(response.getBody().toString());
+                            //Logger.debug(response.getBody().toString());
                             Document xml = response.asXml();
                             Node xml2 = xml.getChildNodes().item(0).getChildNodes().item(0);
                             return xml2;
