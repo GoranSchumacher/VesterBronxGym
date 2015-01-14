@@ -101,6 +101,10 @@ public class PayEx extends Controller {
         Logger.debug("initialize8 errorCode: " + errorCode2);
         String redirectUrl = XPath.selectNode("payex//redirectUrl", initialize8tDoc).getTextContent();
         Logger.debug("initialize8 redirectUrl: " + redirectUrl);
+        String orderRef = XPath.selectNode("payex//orderRef", initialize8tDoc).getTextContent();
+        Logger.debug("initialize8 orderRef: " + orderRef);
+        String sessionRef = XPath.selectNode("payex//sessionRef", initialize8tDoc).getTextContent();
+        Logger.debug("initialize8 sessionRef: " + sessionRef);
 
         //F.Promise<Result> promiseOfResult = getResultPromiseFromDocumentPromise(initialize8DocPromise);
         //return  promiseOfResult;
