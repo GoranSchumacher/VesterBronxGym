@@ -83,8 +83,9 @@ public class PayEx extends Controller {
             String productNumber, String description) {
 
         String clientIPAddress = request().remoteAddress();
+        Logger.debug("clientIPAddress(As reported from Heroku): " +clientIPAddress);
         clientIPAddress = "80.163.27.89";
-        Logger.debug("clientIPAddress: " +clientIPAddress);
+        Logger.debug("clientIPAddress(Hard coded to GS TDC abo): " +clientIPAddress);
 
         // Fetch createAgreement3
         F.Promise<Node> createAgreement3DocPromise = getCreateAgreement3AsDocumentPromise(description);
