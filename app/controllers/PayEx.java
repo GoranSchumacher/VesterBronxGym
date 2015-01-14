@@ -83,6 +83,7 @@ public class PayEx extends Controller {
             String productNumber, String description) {
 
         String clientIPAddress = request().remoteAddress();
+        clientIPAddress = "80.163.27.89";
         Logger.debug("clientIPAddress: " +clientIPAddress);
 
         // Fetch createAgreement3
