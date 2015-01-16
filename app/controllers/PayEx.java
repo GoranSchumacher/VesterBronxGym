@@ -1,6 +1,9 @@
 package controllers;
 
+import be.objectify.deadbolt.java.actions.Group;
+import be.objectify.deadbolt.java.actions.Restrict;
 import controllers.*;
+import models.User;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -15,6 +18,7 @@ import play.libs.ws.WSRequestHolder;
 import play.libs.ws.WSResponse;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.restricted;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,6 +34,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import views.html.*;
 
 /**
  * @author Gøran Schumacher (GS) / Schumacher Consulting Aps
@@ -94,9 +99,9 @@ public class PayEx extends Controller {
         F.Promise<Node> createAgreement3DocPromise = getCreateAgreement3AsDocumentPromise(description);
         Document createAgreementDoc = getDocument(createAgreement3DocPromise, 10000);
         String errorCode = XPath.selectNode("payex//errorCode", createAgreementDoc).getTextContent();
-        Logger.debug("createAgreement3 errorCode: " + errorCode);
         String agreementRef = XPath.selectNode("payex//agreementRef", createAgreementDoc).getTextContent();
-        Logger.debug("agreementRef from call createAgreement3: " + agreementRef);
+        Logger.debug("createAgreement3 agreementRef : " + agreementRef);
+        Logger.debug("    createAgreement3 errorCode: " + errorCode);
 
         // Fetch initialize8
         F.Promise<Node> initialize8DocPromise = getInitialize8AsDocumentPromise(price, vat, orderID,
@@ -170,6 +175,12 @@ public class PayEx extends Controller {
 
     }
 
+
+    @Restrict(@Group(Application.USER_ROLE))
+    public static Result membership() {
+        final User localUser = Application.getLocalUser(session());
+        return ok(membership.render(localUser));
+    }
     //////////////////// GENERAL UTILITIES ////////////////////
 
     private static Document getDocument(F.Promise<Node> promiseNode, long timeout) {
