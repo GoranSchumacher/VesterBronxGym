@@ -120,7 +120,8 @@ public class PayEx extends Controller {
         //return  promiseOfResult;
 
         // Here we should redirect
-        return redirect(redirectUrl);
+        //return redirect(redirectUrl);
+        return seeOther(redirectUrl);
     }
 
     private static F.Promise<Node> getInitialize8AsDocumentPromise(Long price, Integer vat, String orderID,
