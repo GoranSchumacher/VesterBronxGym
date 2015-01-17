@@ -120,9 +120,13 @@ public class PayEx extends Controller {
         //return  promiseOfResult;
 
         // Here we should redirect
-        //return redirect(redirectUrl);
+        response().setContentType("text/html");
+        response().setHeader("Location", redirectUrl);
+
+        return redirect(redirectUrl);
         //return seeOther(redirectUrl);
-        return temporaryRedirect(redirectUrl);
+        //php: header('Location: '.$redirectUrl);
+        //return temporaryRedirect(redirectUrl);
     }
 
     private static F.Promise<Node> getInitialize8AsDocumentPromise(Long price, Integer vat, String orderID,
