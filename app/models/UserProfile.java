@@ -27,7 +27,7 @@ public class UserProfile extends Model{
 
 	public String sex;
 
-    public Date birthDate;
+    public Date birthDate = null;
 
     public String street;
     public String streetNo;
