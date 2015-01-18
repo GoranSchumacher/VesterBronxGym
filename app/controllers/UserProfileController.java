@@ -61,8 +61,11 @@ public class UserProfileController extends Controller {
     @Restrict(@Group(Application.USER_ROLE))
     public static Result userProfile() {
         final User localUser = Application.getLocalUser(session());
-        models.UserProfile userProfile = models.UserProfile.findByUser(localUser);
-        Form<models.UserProfile> filledForm = USERPROFILE_FORM;;
+        models.UserProfile userProfile = null;
+        try {
+            userProfile = models.UserProfile.findByUser(localUser);
+        } catch(Exception e) {}
+        Form<models.UserProfile> filledForm = USERPROFILE_FORM;
         if(userProfile != null) {
             filledForm = USERPROFILE_FORM.fill(userProfile);
         }
