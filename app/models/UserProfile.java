@@ -56,6 +56,9 @@ public class UserProfile extends Model{
         if (contactPermission == null ) {
             return "Angiv hvis vi må kontakte dej!";
         }
+        if (birthDate == null ) {
+            return "Angiv fødselsdag!";
+        }
         return null;
     }
 }
