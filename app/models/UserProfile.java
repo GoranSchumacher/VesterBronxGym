@@ -15,7 +15,7 @@ import java.util.Date;
  * Deadbolt2
  */
 @Entity
-@Table(name = "userProfile")
+@Table(name = "user_profile")
 public class UserProfile extends Model{
 	/**
 	 * 
@@ -37,7 +37,7 @@ public class UserProfile extends Model{
     public String country;
     public String acceptedTerms;
     public String contactPermission;
-    public String payExAgreementId;
+    public String payexAgreementId;
 
     public static final Finder<Long, UserProfile> find = new Finder<Long, UserProfile>(
             Long.class, UserProfile.class);
