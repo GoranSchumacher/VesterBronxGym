@@ -87,7 +87,7 @@ public class UserProfileController extends Controller {
                 userProfile = models.UserProfile.findByUser(localUser);
             } catch(Exception e) {}
             if(userProfile == null) {
-                userProfile = filledForm.get();
+                    userProfile = filledForm.get();
                 //moveFromUserProfileFormToEntity(filledForm, userProfile);
                 userProfile.id = localUser.id;
                 userProfile.save();
