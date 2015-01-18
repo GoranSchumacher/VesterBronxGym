@@ -57,7 +57,7 @@ public class UserProfile extends Model{
             return "Angiv hvis vi må kontakte dej!";
         }
         if (birthDate == null ) {
-            return "Angiv fødselsdag!";
+            birthDate = null;
         }
         return null;
     }
