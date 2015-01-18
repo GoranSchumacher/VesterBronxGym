@@ -45,6 +45,19 @@ public class UserProfile extends Model{
     public static UserProfile findByUser(final User user) {
         return find.where().eq("id", user.id).findUnique();
     }
+
+    public String validate() {
+        if (sex == null ) {
+            return "Køn skal agives!";
+        }
+        if (acceptedTerms == null ) {
+            return "Acceptere betingelserne!";
+        }
+        if (contactPermission == null ) {
+            return "Angiv hvis vi må kontakte dej!";
+        }
+        return null;
+    }
 }
 
 

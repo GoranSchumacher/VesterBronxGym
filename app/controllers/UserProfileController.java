@@ -23,6 +23,7 @@ import static play.data.Form.form;
  */
 public class UserProfileController extends Controller {
 
+    /*
     public static class UserProfile {
 
         public Long id;
@@ -54,7 +55,7 @@ public class UserProfileController extends Controller {
             }
             return null;
         }
-    }
+    }*/
 
     public static final Form<models.UserProfile> USERPROFILE_FORM = form(models.UserProfile.class);
 
