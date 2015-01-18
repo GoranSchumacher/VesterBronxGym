@@ -172,6 +172,54 @@ public class PayEx extends Controller {
         return getDocumentPromiseFromWSPost(holder, body);
     }
 
+
+
+
+
+
+
+
+
+    private static F.Promise<Node> getCompleteAsDocumentPromise(String orderRef) {
+        WSRequestHolder holder = WS.url(PAYEX_TEST_BASE_URL + "/pxorder/pxorder.asmx/Complete")
+                .setTimeout(10000)
+                .setContentType("application/x-www-form-urlencoded");
+
+        String hash = getHash(PAYEX_ACCOUNTNO+orderRef, PAYEX_ENCRYPTIONKEY);
+
+        StringBuffer body = new StringBuffer();
+        body.append("accountNumber="+ PAYEX_ACCOUNTNO);
+        body.append("&orderRef="+ orderRef);
+        body.append("&hash=" + hash);
+
+        return getDocumentPromiseFromWSPost(holder, body);
+    }
+
+    private static F.Promise<Node> getAutoPay3AsDocumentPromise(Long price, Integer vat, String orderID,
+                                                                   String productNumber, String description, String clientIPAddress, String agreementRef) {
+        WSRequestHolder holder = WS.url(PAYEX_TEST_BASE_URL + "/pxorder/pxorder.asmx/Initialize8")
+                .setTimeout(10000)
+                .setContentType("application/x-www-form-urlencoded");
+
+        String hash = getHash(PAYEX_ACCOUNTNO + agreementRef + price  + productNumber + description      + orderID  +
+                  PAYEX_PURCHASE_OPERATION +PAYEX_CURRENCY, PAYEX_ENCRYPTIONKEY);
+
+
+        StringBuffer body = new StringBuffer();
+        body.append("accountNumber="+ PAYEX_ACCOUNTNO);
+        body.append("&agreementRef=" + agreementRef);
+        body.append("&price="+ price);
+        body.append("&productNumber="+ productNumber);
+        body.append("&description=" + description);
+        ///body.append("&vat="+ vat);              // ???? Missing in Doc??????
+        body.append("&orderID="+ orderID);
+        body.append("&purchaseOperation="+ PAYEX_PURCHASE_OPERATION);
+        body.append("&currency="+ PAYEX_CURRENCY);
+        body.append("&hash=" + hash);
+
+        return getDocumentPromiseFromWSPost(holder, body);
+    }
+
     public static Result initialize8ReturnUrlCalled(String orderRef) {
         return ok("returnUrl called with orderRef: " + orderRef);
 
@@ -182,12 +230,12 @@ public class PayEx extends Controller {
 
     }
 
-
-    @Restrict(@Group(Application.USER_ROLE))
+    @Restrict(@Group(Application.USERPROFILE_ROLE))
     public static Result membership() {
         final User localUser = Application.getLocalUser(session());
         return ok(membership.render(localUser));
     }
+
     //////////////////// GENERAL UTILITIES ////////////////////
 
     private static Document getDocument(F.Promise<Node> promiseNode, long timeout) {

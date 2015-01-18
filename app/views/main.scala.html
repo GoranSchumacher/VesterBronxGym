@@ -1,3 +1,7 @@
+@import be.objectify.deadbolt.java.actions.Restrict
+
+@import be.objectify.deadbolt.java.actions.Group
+
 @(title: String, nav: String = "")(content: Html)
 
 @import be.objectify.deadbolt.java.views.html._
@@ -46,6 +50,7 @@
                             <li class="@("active".when(nav == "signup"))"><a href="@routes.Application.signup()">@Messages("playauthenticate.navigation.signup")</a></li>
                         }
                         @subjectPresent() {
+                            <li class="@("active".when(nav == "userProfile"))"><a href="@routes.UserProfileController.userProfile">Bruger Profil</a></li>
                             <li class="@("active".when(nav == "membership"))"><a href="@routes.PayEx.membership">Medlemskab</a></li>
                         }
                     </ul>

@@ -112,6 +112,7 @@ public class User extends Model implements Subject {
 
 	public static User findByUsernamePasswordIdentity(
 			final UsernamePasswordAuthUser identity) {
+
 		return getUsernamePasswordAuthUserFind(identity).findUnique();
 	}
 

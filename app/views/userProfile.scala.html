@@ -1,0 +1,112 @@
+@(userProfileForm: Form[_])
+
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapBasic.f) }
+
+@main("Bruger Profil","userProfile") {
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-8">
+      <h1>Bruger profil</h1>
+    </div>
+  </div>
+
+  <div id="userProfile" class="row">
+
+    <div class="col-xs-6 col-md-4">
+        @* Display proprietary login form *@
+    	@helper.form(routes.UserProfileController.doUserProfile, 'class -> "form-horizontal", 'role -> "form") {
+
+            @if(userProfileForm.hasGlobalErrors) {
+		        <p class="alert alert-danger">
+		          @userProfileForm.globalError.message
+		     	</p>
+            }
+            <input type="hidden" name="id" value="@userProfileForm("id").value"/>
+
+            @inputRadioGroup(
+                userProfileForm("sex"),
+                options = Seq("M"->"Mand","F"->"Kvinde"),
+                '_label -> "Køn",
+                '_error -> userProfileForm("sex").error.map(_.withMessage("Angiv køn"))
+            )
+
+            @inputText(
+                userProfileForm("phone"),
+                '_label -> "Telefon"
+            )
+
+            <table>
+                <tr>
+                    <td width="80%">
+                        @inputText(
+                            userProfileForm("street"),
+                            '_label -> "Gade"
+                        )
+                    </td>
+                    <td width="20%">
+                        @inputText(
+                            userProfileForm("streetNo"),
+                            '_label -> "Nr"
+                        )
+                    </td>
+                </tr>
+            </table>
+            @inputText(
+                userProfileForm("line2"),
+                '_label -> "Address 2"
+            )
+            <table>
+                <tr>
+                    <td width="20%">
+                        @inputText(
+                            userProfileForm("zip"),
+                            '_label -> "PostNr"
+                        )
+                    </td>
+                    <td width="80%">
+                        @inputText(
+                            userProfileForm("city"),
+                            '_label -> "By"
+                        )
+                    </td>
+                </tr>
+            </table>
+            @inputText(
+                userProfileForm("country"),
+                '_label -> "Land"
+            )
+
+            @inputDate(
+                userProfileForm("birthDate"),
+                '_label -> "Fødelsedag",
+                '_dateFormat -> "yyyy-MM-dd",
+                'class -> "date-picker",
+                'type -> "date-local",
+                'step   -> 1,
+                '_size  -> 10
+            )
+            <p>Brug format = ÅÅÅÅ-MM-DD, hvis det ikke vises kalender komponent!</p>
+
+            @inputRadioGroup(
+                userProfileForm("acceptedTerms"),
+                options = Seq("A"->"Accepterer","F"->"Accepterer ikke"),
+                '_label -> "Accepterer betingelser",
+                'label -> "Kan kontaktes via email",
+                '_error -> userProfileForm("acceptedTerms").error.map(_.withMessage("Skal angives"))
+            )
+            @inputRadioGroup(
+                userProfileForm("contactPermission"),
+                options = Seq("A"->"Må kontaktes via email","F"->"Må IKKE kontaktes"),
+                '_label -> "Kan kontaktes via email",
+                'label -> "Kan kontaktes via email",
+                '_error -> userProfileForm("contactPermission").error.map(_.withMessage("Skal angives"))
+            )
+
+            <button type="submit" class="btn btn-default">Gem</button>
+    	}
+    </div>
+
+  </div>
+
+}
