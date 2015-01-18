@@ -81,7 +81,10 @@ public class UserProfileController extends Controller {
             // User did not fill everything properly
             return badRequest(userProfile.render(filledForm));
         } else {
-            models.UserProfile userProfile = models.UserProfile.findByUser(localUser);
+            models.UserProfile userProfile = null;
+            try {
+                userProfile = models.UserProfile.findByUser(localUser);
+            } catch(Exception e) {}
             if(userProfile == null) {
                 userProfile = filledForm.get();
                 //moveFromUserProfileFormToEntity(filledForm, userProfile);
