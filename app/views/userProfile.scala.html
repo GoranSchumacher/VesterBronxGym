@@ -27,12 +27,14 @@
                 userProfileForm("sex"),
                 options = Seq("M"->"Mand","F"->"Kvinde"),
                 '_label -> "Køn",
-                '_error -> userProfileForm("sex").error.map(_.withMessage("Angiv køn"))
+                '_error -> userProfileForm("sex").error.map(_.withMessage("Angiv køn")),
+                '_showConstraints -> false
             )
 
             @inputText(
                 userProfileForm("phone"),
-                '_label -> "Telefon"
+                '_label -> "Telefon",
+                '_showConstraints -> false
             )
 
             <table style="width: auto;" class="table  table-striped  table-condensed">
@@ -40,14 +42,16 @@
                     <td>
                         @inputText(
                             userProfileForm("street"),
-                            '_label -> "Gade"
+                            '_label -> "Gade",
+                            '_showConstraints -> false
                         )
                     </td>
                     <td>
                         @inputText(
                             userProfileForm("streetNo"),
                             '_label -> "Nr",
-                            'columns -> 5
+                            'columns -> 5,
+                            '_showConstraints -> false
                         )
                     </td>
                 </tr>
@@ -58,27 +62,31 @@
 
             @inputText(
                 userProfileForm("line2"),
-                '_label -> "Address 2"
+                '_label -> "Address 2",
+                '_showConstraints -> false
             )
             <table style="width: auto;" class="table  table-striped  table-condensed">
                 <tr>
                     <td>
                         @inputText(
                             userProfileForm("zip"),
-                            '_label -> "PostNr"
+                            '_label -> "PostNr",
+                            '_showConstraints -> false
                         )
                     </td>
                     <td>
                         @inputText(
                             userProfileForm("city"),
-                            '_label -> "By"
+                            '_label -> "By",
+                            '_showConstraints -> false
                         )
                     </td>
                 </tr>
             </table>
             @inputText(
                 userProfileForm("country"),
-                '_label -> "Land"
+                '_label -> "Land",
+                '_showConstraints -> false
             )
 
             @inputDate(
@@ -88,9 +96,10 @@
                 'class -> "date-picker",
                 'type -> "date-local",
                 'step   -> 1,
-                '_size  -> 10
+                '_size  -> 10,
+                '_showConstraints -> false,
+                '_help -> "Brug format = ÅÅÅÅ-MM-DD, hvis det ikke vises kalender komponent!"
             )
-            <p>Brug format = ÅÅÅÅ-MM-DD, hvis det ikke vises kalender komponent!</p>
 
 
         <!-- /div -->
@@ -101,14 +110,16 @@
                 options = Seq("A"->"Accepterer","F"->"Accepterer ikke"),
                 '_label -> "Accepterer betingelser",
                 'label -> "Kan kontaktes via email",
-                '_error -> userProfileForm("acceptedTerms").error.map(_.withMessage("Skal angives"))
+                '_error -> userProfileForm("acceptedTerms").error.map(_.withMessage("Skal angives")),
+                '_showConstraints -> false
             )
             @inputRadioGroup(
                 userProfileForm("contactPermission"),
                 options = Seq("A"->"Må kontaktes via email","F"->"Må IKKE kontaktes"),
                 '_label -> "Kan kontaktes via email",
                 'label -> "Kan kontaktes via email",
-                '_error -> userProfileForm("contactPermission").error.map(_.withMessage("Skal angives"))
+                '_error -> userProfileForm("contactPermission").error.map(_.withMessage("Skal angives")),
+                '_showConstraints -> false
             )
 
             </div>

@@ -27,7 +27,6 @@ public class UserProfile extends Model{
 	@Id
 	public Long id;
 
-    @Constraints.MaxLength(1)
     @Column(length = 1)
 	public String sex;
     @Constraints.MaxLength(10)
@@ -54,10 +53,8 @@ public class UserProfile extends Model{
     @Constraints.MaxLength(20)
     @Column(length = 20)
     public String country;
-    @Constraints.MaxLength(1)
     @Column(length = 1)
     public String acceptedTerms;
-    @Constraints.MaxLength(1)
     @Column(length = 1)
     public String contactPermission;
     @Constraints.MaxLength(20)
