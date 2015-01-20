@@ -1,7 +1,6 @@
 @(userProfileForm: Form[_])
 
 @import helper._
-@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapBasic.f) }
 
 @main("Bruger Profil","userProfile") {
 
@@ -13,7 +12,6 @@
 
   <div id="userProfile" class="row">
 
-    <div class="col-xs-6 col-md-4">
         @* Display proprietary login form *@
     	@helper.form(routes.UserProfileController.doUserProfile, 'class -> "form-horizontal", 'role -> "form") {
 
@@ -24,6 +22,7 @@
             }
             <input type="hidden" name="id" value="@userProfileForm("id").value"/>
 
+            <!--  div class="auto"  -->
             @inputRadioGroup(
                 userProfileForm("sex"),
                 options = Seq("M"->"Mand","F"->"Kvinde"),
@@ -36,35 +35,40 @@
                 '_label -> "Telefon"
             )
 
-            <table>
+            <table style="width: auto;" class="table  table-striped  table-condensed">
                 <tr>
-                    <td width="80%">
+                    <td>
                         @inputText(
                             userProfileForm("street"),
                             '_label -> "Gade"
                         )
                     </td>
-                    <td width="20%">
+                    <td>
                         @inputText(
                             userProfileForm("streetNo"),
-                            '_label -> "Nr"
+                            '_label -> "Nr",
+                            'columns -> 5
                         )
                     </td>
                 </tr>
             </table>
+
+        <!-- /div -->
+    <!--  div class="auto"  -->
+
             @inputText(
                 userProfileForm("line2"),
                 '_label -> "Address 2"
             )
-            <table>
+            <table style="width: auto;" class="table  table-striped  table-condensed">
                 <tr>
-                    <td width="20%">
+                    <td>
                         @inputText(
                             userProfileForm("zip"),
                             '_label -> "PostNr"
                         )
                     </td>
-                    <td width="80%">
+                    <td>
                         @inputText(
                             userProfileForm("city"),
                             '_label -> "By"
@@ -88,6 +92,10 @@
             )
             <p>Brug format = ÅÅÅÅ-MM-DD, hvis det ikke vises kalender komponent!</p>
 
+
+        <!-- /div -->
+    <!--  div class="auto"  -->
+
             @inputRadioGroup(
                 userProfileForm("acceptedTerms"),
                 options = Seq("A"->"Accepterer","F"->"Accepterer ikke"),
@@ -103,9 +111,9 @@
                 '_error -> userProfileForm("contactPermission").error.map(_.withMessage("Skal angives"))
             )
 
+            </div>
             <button type="submit" class="btn btn-default">Gem</button>
     	}
-    </div>
 
   </div>
 

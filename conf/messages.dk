@@ -115,8 +115,8 @@ playauthenticate.user.exists.message=This user already exists.
 # play-authenticate: Navigation
 playauthenticate.navigation.profile=Profile
 playauthenticate.navigation.link_more=Link more providers
-playauthenticate.navigation.logout=Sign out
-playauthenticate.navigation.login=Log in
+playauthenticate.navigation.logout=Logga ut
+playauthenticate.navigation.login=Logga in
 playauthenticate.navigation.home=Home
 playauthenticate.navigation.restricted=Restricted page
 playauthenticate.navigation.signup=Sign up

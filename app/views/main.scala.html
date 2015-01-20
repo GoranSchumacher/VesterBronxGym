@@ -23,6 +23,7 @@
 
         <link rel="stylesheet" href="@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.min.css"))">
         <link href="@routes.Assets.at("css/main.css")" rel="stylesheet">
+        <link rel="shortcut icon" type="image/x-icon" href="@routes.Assets.at("customers/vbgym/icons/vbgym_web.png")" />
     </head>
 
     <body>
@@ -43,8 +44,8 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="@("active".when(nav == ""))"><a href="@routes.Application.index()">@Messages("playauthenticate.navigation.home")</a></li>
-                        <li class="@("active".when(nav == "restricted"))"><a href="@routes.Application.restricted()">@Messages("playauthenticate.navigation.restricted")</a></li>
+                        <!--  li class="@("active".when(nav == ""))"><a href="@routes.Application.index()">@Messages("playauthenticate.navigation.home")</a></li  -->
+                        <!--  li class="@("active".when(nav == "restricted"))"><a href="@routes.Application.restricted()">@Messages("playauthenticate.navigation.restricted")</a></li  -->
 
                         @subjectNotPresent() {
                             <li class="@("active".when(nav == "signup"))"><a href="@routes.Application.signup()">@Messages("playauthenticate.navigation.signup")</a></li>
@@ -62,7 +63,7 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> @user.name <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li class="@("active".when(nav == "profile"))"><a href="@routes.Application.profile()">@Messages("playauthenticate.navigation.profile")</a></li>
-                                    <li><a href="@routes.Account.link()">@Messages("playauthenticate.navigation.link_more")</a></li>
+                                    <!--  li><a href="@routes.Account.link()">@Messages("playauthenticate.navigation.link_more")</a></li  -->
                                     <li class="divider"></li>
                                     <li><a href="@com.feth.play.module.pa.controllers.routes.Authenticate.logout()"><i class="icon-off"></i> @Messages("playauthenticate.navigation.logout")</a></li>
                                 </ul>
@@ -98,14 +99,10 @@
             <hr>
 
             <footer>
-                <p>&copy;
-                    2012-2014 Play! Authenticate. Licensed under Apache License, Version 2.0. View details <a href="https://github.com/joscha/play-authenticate/blob/master/LICENSE">
-                        here</a>.</p>
                 <p>
-                    <small>Styles by <a href="http://getbootstrap.com" target="_blank">
-                        Twitter Bootstrap</a> &middot;
-                        Provider icons by <a href="https://github.com/paulrobertlloyd/socialmediaicons/" target="_blank">
-                            Paul Robert Lloyd</a></small></p>
+                    <img src="@routes.Assets.at("customers/vbgym/icons/vbgym_web.png")" align="left" height="42" width="42"  />
+                &nbsp;&nbsp;&nbsp;&nbsp;Vesterbrogade 76 2 sal, 1620 København V
+                <p>
             </footer>
         </div> <!-- /container -->
 

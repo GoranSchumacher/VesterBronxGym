@@ -26,6 +26,7 @@ public class UserProfile extends Model{
 	public Long id;
 
 	public String sex;
+    public String phone;
 
     public Date birthDate;
 

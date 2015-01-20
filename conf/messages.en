@@ -49,33 +49,33 @@ playauthenticate.change_password.success=Password has been changed successfully.
 playauthenticate.password.signup.error.passwords_not_same=Passwords do not match.
 playauthenticate.password.login.unknown_user_or_pw=Unknown user or password.
 
-playauthenticate.password.verify_signup.subject=PlayAuthenticate: Complete your signup
-playauthenticate.password.verify_email.subject=PlayAuthenticate: Confirm your e-mail address
-playauthenticate.password.reset_email.subject=PlayAuthenticate: How to reset your password
+playauthenticate.password.verify_signup.subject=Vesterbronx Gym: Afslute signup processen
+playauthenticate.password.verify_email.subject=Vesterbronx Gym: Bekræfte din e-mail addresse
+playauthenticate.password.reset_email.subject=Vesterbronx Gym: Hvordan du nulstiller dit password
 
 # play-authenticate: Additional translations
 
-playauthenticate.login.email.placeholder=Your e-mail address
-playauthenticate.login.password.placeholder=Choose a password
-playauthenticate.login.password.repeat=Repeat chosen password
-playauthenticate.login.title=Login
+playauthenticate.login.email.placeholder=Din e-mail addresse
+playauthenticate.login.password.placeholder=Vælg et password
+playauthenticate.login.password.repeat=Gentag valgt password
+playauthenticate.login.title=Log ind
 playauthenticate.login.password.placeholder=Password
-playauthenticate.login.now=Login now
-playauthenticate.login.forgot.password=Forgot your password?
+playauthenticate.login.now=Log ind nu
+playauthenticate.login.forgot.password=Glemt dit password?
 playauthenticate.login.oauth=or log in using one of the following providers:
 playauthenticate.login.basic=or try HTTP basic auth (as example/secret)
 
-playauthenticate.signup.title=Signup
-playauthenticate.signup.name=Your name
-playauthenticate.signup.now=Sign up now
+playauthenticate.signup.title=Tilmeld
+playauthenticate.signup.name=Dit navn
+playauthenticate.signup.now=Tilmeld dig nu
 playauthenticate.signup.oauth=or sign up using one of the following providers:
 
 playauthenticate.verify.account.title=E-mail verification required
 playauthenticate.verify.account.before=Before setting a password, you need to
 playauthenticate.verify.account.first=first verify your e-mail address
 
-playauthenticate.change.password.title=Change your password here
-playauthenticate.change.password.cta=Change my password
+playauthenticate.change.password.title=Ændre dit password her
+playauthenticate.change.password.cta=Ændre midt password
 
 playauthenticate.merge.accounts.title=Merge accounts
 playauthenticate.merge.accounts.question=Do you want to merge your current account ({0}) with this account: {1}?
@@ -91,15 +91,15 @@ playauthenticate.link.account.ok=OK
 
 # play-authenticate: Signup folder translations
 
-playauthenticate.verify.email.title=Verify your e-mail
-playauthenticate.verify.email.requirement=Before you can use PlayAuthenticate, you first need to verify your e-mail address.
-playauthenticate.verify.email.cta=An e-mail has been sent to the registered address. Please follow the embedded link to activate your account.
+playauthenticate.verify.email.title=Verificer din e-mail
+playauthenticate.verify.email.requirement=Før du kan købe hos Vesterbronx Gym, skall du verificere din email addresse.
+playauthenticate.verify.email.cta=Email er sendt til den angivne email addresse. Var venlig klicka på den medsendte link, før at verificere din email addresse.
 
-playauthenticate.password.reset.title=Reset password
-playauthenticate.password.reset.cta=Reset my password
+playauthenticate.password.reset.title=Nullstill password
+playauthenticate.password.reset.cta=Nullstill midt password
 
-playauthenticate.password.forgot.title=Forgot password
-playauthenticate.password.forgot.cta=Send reset instructions
+playauthenticate.password.forgot.title=Glemt password
+playauthenticate.password.forgot.cta=Send nullstillings instrukser
 
 playauthenticate.oauth.access.denied.title=OAuth access denied
 playauthenticate.oauth.access.denied.explanation=If you want to use PlayAuthenticate with OAuth, you must accept the connection.
@@ -113,13 +113,13 @@ playauthenticate.user.exists.title=User exists
 playauthenticate.user.exists.message=This user already exists.
 
 # play-authenticate: Navigation
-playauthenticate.navigation.profile=Profile
+playauthenticate.navigation.profile=Profil
 playauthenticate.navigation.link_more=Link more providers
-playauthenticate.navigation.logout=Sign out
-playauthenticate.navigation.login=Log in
+playauthenticate.navigation.logout=Log ud
+playauthenticate.navigation.login=Log ind
 playauthenticate.navigation.home=Home
 playauthenticate.navigation.restricted=Restricted page
-playauthenticate.navigation.signup=Sign up
+playauthenticate.navigation.signup=Tilmeld
 
 # play-authenticate: Handler
 playauthenticate.handler.loginfirst=You need to log in first, to view ''{0}''
