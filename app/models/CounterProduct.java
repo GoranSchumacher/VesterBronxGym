@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import com.avaje.ebean.annotation.EnumValue;
 import com.feth.play.module.pa.providers.password.UsernamePasswordAuthUser;
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import be.objectify.deadbolt.core.models.Permission;
 
@@ -25,8 +26,12 @@ public class CounterProduct extends Model{
 	@Id
     public Long id;
 
+    @Constraints.MaxLength(15)
+    @Column(length = 15)
     public String eanCode;
 
+    @Constraints.MaxLength(30)
+    @Column(length = 30)
     public String description;
 
     public Long amount;

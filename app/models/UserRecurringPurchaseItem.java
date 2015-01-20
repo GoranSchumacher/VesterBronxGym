@@ -1,11 +1,9 @@
 package models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.feth.play.module.pa.providers.password.UsernamePasswordAuthUser;
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import be.objectify.deadbolt.core.models.Permission;
 
@@ -35,23 +33,52 @@ public class UserRecurringPurchaseItem extends Model{
     @ManyToOne
     public UserRecurringPurchase purchase;
 
+
+    @Constraints.MaxLength(30)
+    @Column(length = 30)
 	public String orderRef;
+    @Constraints.MaxLength(30)
+    @Column(length = 30)
     public String sessionRef;
 
+    @Constraints.MaxLength(60)
+    @Column(length = 60)
     public String initializeRedirectUrl;
+    @Constraints.MaxLength(10)
+    @Column(length = 10)
     public String initializeErrorCode;
+    @Constraints.MaxLength(30)
+    @Column(length = 30)
     public String initializeDescription;
 
+    @Constraints.MaxLength(10)
+    @Column(length = 10)
     public String completeErrorCode;
+    @Constraints.MaxLength(30)
+    @Column(length = 30)
     public String completeDescription;
+    @Constraints.MaxLength(30)
+    @Column(length = 30)
     public String completeParamName;
+    @Constraints.MaxLength(20)
+    @Column(length = 20)
     public String completeTransactionNumber;
+    @Constraints.MaxLength(20)
+    @Column(length = 20)
     public String completeTransactionTime;
 
 
+    @Constraints.MaxLength(10)
+    @Column(length = 10)
     public String autoPayErrorCode;
+    @Constraints.MaxLength(20)
+    @Column(length = 20)
     public String autoPayErrorCodeSimple;
+    @Constraints.MaxLength(30)
+    @Column(length = 30)
     public String autoPayDescription;
+    @Constraints.MaxLength(30)
+    @Column(length = 30)
     public String autoPayParamName;
 
 

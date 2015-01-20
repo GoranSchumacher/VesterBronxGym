@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import com.avaje.ebean.annotation.EnumValue;
 import com.feth.play.module.pa.providers.password.UsernamePasswordAuthUser;
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import be.objectify.deadbolt.core.models.Permission;
 
@@ -25,7 +26,11 @@ public class RecurringProduct extends Model{
 	@Id
     public Long id;
 
+    @Constraints.MaxLength(30)
+    @Column(length = 30)
     public String description;
+    @Constraints.MaxLength(255)
+    @Column(length = 255)
     public String longDescription;
 
     public enum Period {

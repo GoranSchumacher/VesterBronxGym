@@ -1,9 +1,12 @@
+# --- Created by Ebean DDL
+# To stop Ebean DDL generation, remove this comment and start using Evolutions
+
 # --- !Ups
 
 create table counter_product (
   id                        bigint not null,
-  ean_code                  varchar(255),
-  description               varchar(255),
+  ean_code                  varchar(15),
+  description               varchar(30),
   amount                    bigint,
   vat_amount                bigint,
   constraint pk_counter_product primary key (id))
@@ -19,7 +22,7 @@ create table linked_account (
 
 create table recurring_product (
   id                        bigint not null,
-  description               varchar(255),
+  description               varchar(30),
   long_description          varchar(255),
   type                      varchar(1),
   period                    varchar(5),
@@ -51,10 +54,10 @@ create table token_action (
 
 create table users (
   id                        bigint not null,
-  email                     varchar(255),
-  name                      varchar(255),
-  first_name                varchar(255),
-  last_name                 varchar(255),
+  email                     varchar(30),
+  name                      varchar(30),
+  first_name                varchar(10),
+  last_name                 varchar(20),
   last_login                timestamp,
   active                    boolean,
   email_validated           boolean,
@@ -88,18 +91,18 @@ create table user_permission (
 
 create table user_profile (
   id                        bigint not null,
-  sex                       varchar(255),
-  phone                     varchar(255),
+  sex                       varchar(1),
+  phone                     varchar(10),
   birth_date                timestamp,
-  street                    varchar(255),
-  street_no                 varchar(255),
-  line2                     varchar(255),
-  zip                       varchar(255),
-  city                      varchar(255),
-  country                   varchar(255),
-  accepted_terms            varchar(255),
-  contact_permission        varchar(255),
-  payex_agreement_id        varchar(255),
+  street                    varchar(20),
+  street_no                 varchar(5),
+  line2                     varchar(30),
+  zip                       varchar(5),
+  city                      varchar(20),
+  country                   varchar(20),
+  accepted_terms            varchar(1),
+  contact_permission        varchar(1),
+  payex_agreement_id        varchar(20),
   constraint pk_user_profile primary key (id))
 ;
 
@@ -118,20 +121,20 @@ create table user_recurring_purchase_item (
   actual_amount             bigint,
   actual_vat_amount         bigint,
   purchase_id               bigint,
-  order_ref                 varchar(255),
-  session_ref               varchar(255),
-  initialize_redirect_url   varchar(255),
-  initialize_error_code     varchar(255),
-  initialize_description    varchar(255),
-  complete_error_code       varchar(255),
-  complete_description      varchar(255),
-  complete_param_name       varchar(255),
-  complete_transaction_number varchar(255),
-  complete_transaction_time varchar(255),
-  auto_pay_error_code       varchar(255),
-  auto_pay_error_code_simple varchar(255),
-  auto_pay_description      varchar(255),
-  auto_pay_param_name       varchar(255),
+  order_ref                 varchar(30),
+  session_ref               varchar(30),
+  initialize_redirect_url   varchar(60),
+  initialize_error_code     varchar(10),
+  initialize_description    varchar(30),
+  complete_error_code       varchar(10),
+  complete_description      varchar(30),
+  complete_param_name       varchar(30),
+  complete_transaction_number varchar(20),
+  complete_transaction_time varchar(20),
+  auto_pay_error_code       varchar(10),
+  auto_pay_error_code_simple varchar(20),
+  auto_pay_description      varchar(30),
+  auto_pay_param_name       varchar(30),
   constraint pk_user_recurring_purchase_item primary key (id))
 ;
 

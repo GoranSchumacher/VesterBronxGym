@@ -1,10 +1,12 @@
 package models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.feth.play.module.pa.providers.password.UsernamePasswordAuthUser;
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import be.objectify.deadbolt.core.models.Permission;
 
@@ -25,19 +27,41 @@ public class UserProfile extends Model{
 	@Id
 	public Long id;
 
+    @Constraints.MaxLength(1)
+    @Column(length = 1)
 	public String sex;
+    @Constraints.MaxLength(10)
+    @Column(length = 10)
     public String phone;
 
     public Date birthDate;
 
+    @Constraints.MaxLength(20)
+    @Column(length = 20)
     public String street;
+    @Constraints.MaxLength(5)
+    @Column(length = 5)
     public String streetNo;
+    @Constraints.MaxLength(30)
+    @Column(length = 30)
     public String line2;
+    @Constraints.MaxLength(5)
+    @Column(length = 5)
     public String zip;
+    @Constraints.MaxLength(20)
+    @Column(length = 20)
     public String city;
+    @Constraints.MaxLength(20)
+    @Column(length = 20)
     public String country;
+    @Constraints.MaxLength(1)
+    @Column(length = 1)
     public String acceptedTerms;
+    @Constraints.MaxLength(1)
+    @Column(length = 1)
     public String contactPermission;
+    @Constraints.MaxLength(20)
+    @Column(length = 20)
     public String payexAgreementId;
 
     public static final Finder<Long, UserProfile> find = new Finder<Long, UserProfile>(

@@ -12,6 +12,7 @@ import com.feth.play.module.pa.user.EmailIdentity;
 import com.feth.play.module.pa.user.NameIdentity;
 import com.feth.play.module.pa.user.FirstLastNameIdentity;
 import models.TokenAction.Type;
+import play.api.data.validation.Constraint;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -38,12 +39,20 @@ public class User extends Model implements Subject {
 	// if you make this unique, keep in mind that users *must* merge/link their
 	// accounts then on signup with additional providers
 	// @Column(unique = true)
+    @Constraints.MaxLength(30)
+    @Column(length = 30)
 	public String email;
 
+    @Constraints.MaxLength(30)
+    @Column(length = 30)
 	public String name;
-	
+
+    @Constraints.MaxLength(10)
+    @Column(length = 10)
 	public String firstName;
-	
+
+    @Constraints.MaxLength(20)
+    @Column(length = 20)
 	public String lastName;
 
 	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
