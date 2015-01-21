@@ -87,14 +87,21 @@ public class UserProfileController extends Controller {
                 userProfile = models.UserProfile.findByUser(localUser);
             } catch(Exception e) {}
             if(userProfile == null) {
-                    userProfile = filledForm.get();
+                userProfile = filledForm.get();
                 //moveFromUserProfileFormToEntity(filledForm, userProfile);
                 userProfile.id = localUser.id;
+
+                // We removed the field on the form, so set it to default for now.
+                userProfile.country = "Denmark";
+
                 userProfile.save();
 
                 // Add USERPROFILE_ROLE to user
                 localUser.roles.add(SecurityRole.findByRoleName(Application.USERPROFILE_ROLE));
                 localUser.save();
+
+                // Redirect to payment page
+                return redirect(routes.PayEx.membership());
             } else {
                 filledForm.get().update();
                 //moveFromUserProfileFormToEntity(filledForm, userProfile);
@@ -102,6 +109,21 @@ public class UserProfileController extends Controller {
             }
             return redirect(routes.Application.index());
         }
+    }
+
+    public static boolean hasProfile() {
+        final User localUser = Application.getLocalUser(session());
+        if(localUser == null) {
+            return false;
+        }
+        models.UserProfile userProfile = null;
+        try {
+            userProfile = models.UserProfile.findByUser(localUser);
+        } catch(Exception e) {}
+        if(userProfile == null) {
+            return false;
+        }
+        return true;
     }
 
     private static void moveFromUserProfileFormToEntity(Form<models.UserProfile> filledForm, models.UserProfile userProfile) {

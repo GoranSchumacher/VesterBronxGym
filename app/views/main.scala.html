@@ -52,7 +52,10 @@
                         }
                         @subjectPresent() {
                             <li class="@("active".when(nav == "userProfile"))"><a href="@routes.UserProfileController.userProfile">Bruger Profil</a></li>
-                            <li class="@("active".when(nav == "membership"))"><a href="@routes.PayEx.membership">Medlemskab</a></li>
+                            @if(controllers.UserProfileController.hasProfile) {
+                                <li class="@("active".when(nav == "membership"))"><a href="@routes.PayEx.membership">
+                                    Medlemskab</a></li>
+                            }
                         }
                     </ul>
 
@@ -101,7 +104,7 @@
             <footer>
                 <p>
                     <img src="@routes.Assets.at("customers/vbgym/icons/vbgym_web.png")" align="left" height="42" width="42"  />
-                &nbsp;&nbsp;&nbsp;&nbsp;Vesterbrogade 76 2 sal, 1620 København V
+                &nbsp;&nbsp;&nbsp;&nbsp;Vesterbrogade 76, 2 sal, 1620 København V
                 <p>
             </footer>
         </div> <!-- /container -->
