@@ -94,6 +94,14 @@ public class Application extends Controller {
 		}
 	}
 
+    public static Result loginOrIndex() {
+        final User localUser = getLocalUser(session());
+        if (localUser != null) {
+            return redirect(routes.Application.index());
+        }
+        return redirect(routes.Application.login());
+    }
+
 	public static String formatTimestamp(final long t) {
 		return new SimpleDateFormat("yyyy-dd-MM HH:mm:ss").format(new Date(t));
 	}
