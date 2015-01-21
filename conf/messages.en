@@ -1,11 +1,11 @@
 # Override default Play's validation messages
 
 # --- Constraints
-constraint.required=Krævet
-constraint.min=Min. værdi: {0}
-constraint.max=Max. værdi: {0}
-constraint.minLength=Min. længde: {0}
-constraint.maxLength=Max. længde: {0}
+constraint.required=KrÃ¦vet
+constraint.min=Min. vÃ¦rdi: {0}
+constraint.max=Max. vÃ¦rdi: {0}
+constraint.minLength=Min. lÃ¦ngde: {0}
+constraint.maxLength=Max. lÃ¦ngde: {0}
 constraint.email=Email
 
 # --- Formats
@@ -14,15 +14,15 @@ format.numeric=Numerisk
 format.real=Real
 
 # --- Errors
-error.invalid=Ugyldigt værdi
-error.required=Dette felt er krævet
-error.number=Numerisk værdi
+error.invalid=Ugyldigt vÃ¦rdi
+error.required=Dette felt er krÃ¦vet
+error.number=Numerisk vÃ¦rdi
 error.real=Real number value expected
-error.min=Skal være større eller lige med {0}
-error.max=Skal være mindre eller lige med {0}
-error.minLength=Min. længde er {0}
-error.maxLength=Max. længde er {0}
-error.email=Gyldig email er krævet
+error.min=Skal vÃ¦re stÃ¸rre eller lige med {0}
+error.max=Skal vÃ¦re mindre eller lige med {0}
+error.minLength=Min. lÃ¦ngde er {0}
+error.maxLength=Max. lÃ¦ngde er {0}
+error.email=Gyldig email er krÃ¦vet
 error.pattern=Skal opfylde {0}
 
 ### --- play-authenticate START
@@ -50,13 +50,13 @@ playauthenticate.password.signup.error.passwords_not_same=Passwords do not match
 playauthenticate.password.login.unknown_user_or_pw=Unknown user or password.
 
 playauthenticate.password.verify_signup.subject=Vesterbronx Gym: Afslute signup processen
-playauthenticate.password.verify_email.subject=Vesterbronx Gym: Bekræfte din e-mail addresse
+playauthenticate.password.verify_email.subject=Vesterbronx Gym: BekrÃ¦fte din e-mail addresse
 playauthenticate.password.reset_email.subject=Vesterbronx Gym: Hvordan du nulstiller dit password
 
 # play-authenticate: Additional translations
 
 playauthenticate.login.email.placeholder=Din e-mail addresse
-playauthenticate.login.password.placeholder=Vælg et password
+playauthenticate.login.password.placeholder=VÃ¦lg et password
 playauthenticate.login.password.repeat=Gentag valgt password
 playauthenticate.login.title=Log ind
 playauthenticate.login.password.placeholder=Password
@@ -74,8 +74,8 @@ playauthenticate.verify.account.title=E-mail verification required
 playauthenticate.verify.account.before=Before setting a password, you need to
 playauthenticate.verify.account.first=first verify your e-mail address
 
-playauthenticate.change.password.title=Ændre dit password her
-playauthenticate.change.password.cta=Ændre midt password
+playauthenticate.change.password.title=Ã†ndre dit password her
+playauthenticate.change.password.cta=Ã†ndre midt password
 
 playauthenticate.merge.accounts.title=Merge accounts
 playauthenticate.merge.accounts.question=Do you want to merge your current account ({0}) with this account: {1}?
@@ -92,8 +92,8 @@ playauthenticate.link.account.ok=OK
 # play-authenticate: Signup folder translations
 
 playauthenticate.verify.email.title=Verificer din e-mail
-playauthenticate.verify.email.requirement=Før du kan købe hos Vesterbronx Gym, skall du verificere din email addresse.
-playauthenticate.verify.email.cta=Email er sendt til den angivne email addresse. Var venlig klicka på den medsendte link, før at verificere din email addresse.
+playauthenticate.verify.email.requirement=FÃ¸r du kan kÃ¸be hos Vesterbronx Gym, skall du verificere din email addresse.
+playauthenticate.verify.email.cta=Email er sendt til den angivne email addresse. Var venlig klicka pÃ¥ den medsendte link, fÃ¸r at verificere din email addresse.
 
 playauthenticate.password.reset.title=Nullstill password
 playauthenticate.password.reset.cta=Nullstill midt password
