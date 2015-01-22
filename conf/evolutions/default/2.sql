@@ -1,30 +1,17 @@
-## --- !Ups
-#
-##create table user_profile (
-#  id bigint not null,
-#  birth_date date null,
-#  sex char,
-#  phone varchar(20) null,
-#  street varchar(20) null,
-#  street_no varchar(20) null,
-#  line2 varchar(20) null,
-#  zip varchar(5) null,
-#  city varchar(20) null,
-#  country varchar(20) null,
-#  accepted_terms char null,
-#  contact_permission char null,
-#  payEx_agreement_id varchar(40),
-#  constraint pk_user_profile primary key (id)
-#);
-#
-#create sequence user_profile_seq;
-#
-#insert into security_role(id, role_name) values (2, 'userProfile')
-#
-## --- !Downs
-#
-#drop table user_profile cascade;
-#
-#drop sequence if exists user_profile_seq;
-#
-#delete from security_role where id = 2;
+# --- !Ups
+
+create table s3file (
+  id                        varchar(40) not null,
+  user_profile_id           bigint,
+  bucket                    varchar(255),
+  name                      varchar(255),
+  constraint uq_s3file_1 unique (user_profile_id),
+  constraint pk_s3file primary key (id))
+;
+
+alter table s3file add constraint fk_s3file_userProfile_2 foreign key (user_profile_id) references user_profile (id);
+create index ix_s3file_userProfile_2 on s3file (user_profile_id);
+
+# --- !Downs
+
+drop table if exists s3file cascade;

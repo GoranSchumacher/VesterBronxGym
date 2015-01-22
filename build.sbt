@@ -18,7 +18,8 @@ val appDependencies = Seq(
   javaEbean,
   "org.webjars" %% "webjars-play" % "2.3.0",
   "org.webjars" % "bootstrap" % "3.2.0",
-  "postgresql" % "postgresql" % "9.1-901.jdbc4"
+  "postgresql" % "postgresql" % "9.1-901.jdbc4",
+  "com.amazonaws" % "aws-java-sdk" % "1.3.11"
 )
 
 //  Uncomment the next line for local development of the Play Authenticate core:

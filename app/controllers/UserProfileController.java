@@ -2,18 +2,23 @@ package controllers;
 
 import be.objectify.deadbolt.java.actions.Group;
 import be.objectify.deadbolt.java.actions.Restrict;
+import models.S3File;
 import models.SecurityRole;
 import models.User;
 import models.UserProfile;
 import play.data.Form;
+import play.db.ebean.Model;
 import play.mvc.Controller;
 import play.mvc.Result;
 import providers.MyUsernamePasswordAuthProvider;
 import views.html.signup;
 import views.html.userProfile;
+import views.html.*;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 import static play.data.Form.form;
 
@@ -127,7 +132,7 @@ public class UserProfileController extends Controller {
         return userProfile.acceptedTerms.equalsIgnoreCase("A");
     }
 
-    private static UserProfile getUserProfileFromLoggedInUser() {
+    public static UserProfile getUserProfileFromLoggedInUser() {
         final User localUser = Application.getLocalUser(session());
         if(localUser == null) {
             return null;
@@ -139,6 +144,10 @@ public class UserProfileController extends Controller {
         return userProfile;
     }
 
+    public static Result viewUsers() {
+        List<UserProfile> users = new Model.Finder(Long.class, UserProfile.class).all();
+        return ok(viewUsers.render(users));
+    }
 
     private static void moveFromUserProfileFormToEntity(Form<models.UserProfile> filledForm, models.UserProfile userProfile) {
         userProfile.sex = filledForm.get().sex;

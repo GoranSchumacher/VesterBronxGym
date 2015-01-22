@@ -1,0 +1,22 @@
+@(users: List[models.UserProfile])
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Users</title>
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+    </head>
+    <body>
+
+        <h1>Users:</h1>
+        <ul>
+        @for(user <- users) {
+            <li>@user.birthDate&nbsp;@if(user.userImage()!=null) {<a href="@user.userImage().getUrl()">@user.userImage().name</a>}</li>
+
+
+            <li>@user.birthDate</li>
+        }
+        </ul>
+
+    </body>
+</html>

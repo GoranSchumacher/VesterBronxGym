@@ -93,6 +93,9 @@ public class PayEx extends Controller {
         //clientIPAddress = "80.163.27.89";
         //Logger.debug("clientIPAddress(Hard coded to GS TDC abo): " +clientIPAddress);
         String clientIPAddress = request().getHeader("X-Forwarded-For");
+
+        clientIPAddress = request().remoteAddress();
+
         Logger.debug("clientIPAddress(X-Forwarded-For): " +clientIPAddress);
 
         // Fetch createAgreement3
@@ -120,8 +123,8 @@ public class PayEx extends Controller {
         //return  promiseOfResult;
 
         // Here we should redirect
-        response().setContentType("text/html");
-        response().setHeader("Location", redirectUrl);
+        //response().setContentType("text/html");
+        //response().setHeader("Location", redirectUrl);
 
         //return redirect(redirectUrl);
         //return seeOther(redirectUrl);

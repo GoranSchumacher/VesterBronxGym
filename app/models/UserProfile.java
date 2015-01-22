@@ -1,9 +1,6 @@
 package models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.feth.play.module.pa.providers.password.UsernamePasswordAuthUser;
 import play.data.validation.Constraints;
@@ -60,6 +57,11 @@ public class UserProfile extends Model{
     @Constraints.MaxLength(20)
     @Column(length = 20)
     public String payexAgreementId;
+
+
+    public S3File userImage() {
+        return S3File.findByUserProfile(this);
+    }
 
     public static final Finder<Long, UserProfile> find = new Finder<Long, UserProfile>(
             Long.class, UserProfile.class);

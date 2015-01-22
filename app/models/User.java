@@ -125,6 +125,10 @@ public class User extends Model implements Subject {
 		return getUsernamePasswordAuthUserFind(identity).findUnique();
 	}
 
+    public static UserProfile findByUser(final User user) {
+        return find.where().eq("id", user.id).findUnique();
+    }
+
 	private static ExpressionList<User> getUsernamePasswordAuthUserFind(
 			final UsernamePasswordAuthUser identity) {
 		return getEmailUserFind(identity.getEmail()).eq(
