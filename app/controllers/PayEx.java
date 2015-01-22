@@ -267,7 +267,7 @@ public class PayEx extends Controller {
                             Map<String, List<String>> headers = response.getAllHeaders();
                             for(List<String> headerL : headers.values()) {
                                 for(String header : headerL) {
-                                    Logger.debug(header);
+                                    Logger.debug("    Header: " + header);
                                 }
                             }
                             Document xml = response.asXml();
