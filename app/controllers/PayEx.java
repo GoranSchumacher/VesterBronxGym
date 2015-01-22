@@ -98,7 +98,7 @@ public class PayEx extends Controller {
         //Logger.debug("clientIPAddress(Hard coded to GS TDC abo): " +clientIPAddress);
         String clientIPAddress = request().getHeader("X-Forwarded-For");
 
-        clientIPAddress = request().remoteAddress();
+        //clientIPAddress = request().remoteAddress();
 
         Logger.debug("clientIPAddress(X-Forwarded-For): " +clientIPAddress);
 
