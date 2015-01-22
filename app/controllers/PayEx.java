@@ -37,6 +37,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import views.html.*;
 
@@ -151,6 +152,8 @@ public class PayEx extends Controller {
         String cancelUrl = routes.PayEx.initialize8CancelUrlCalled().absoluteURL(request());
         cancelUrl = cancelUrl.replaceFirst("http://", "https://");
         Logger.debug("cancelUrl: " + cancelUrl);
+        Random random = new Random();
+        orderID= new Integer(random.nextInt(1000)+1000).toString();
 
         String hash = getHash(PAYEX_ACCOUNTNO+PAYEX_PURCHASE_OPERATION+price+"" + PAYEX_CURRENCY + vat + orderID + productNumber +
                 description + clientIPAddress + "" + "" + "" + returnUrl + PAYEX_VIEW + agreementRef + cancelUrl + PAYEX_CLIENTLANGUAGE, PAYEX_ENCRYPTIONKEY);
