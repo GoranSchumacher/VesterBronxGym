@@ -137,7 +137,8 @@ public class PayEx extends Controller {
 
         //return found(redirectUrl);
 
-        return temporaryRedirect(redirectUrl);
+        //return temporaryRedirect(redirectUrl);
+        return  ok();
         //php: header('Location: '.$redirectUrl);
         //return temporaryRedirect(redirectUrl);
     }
