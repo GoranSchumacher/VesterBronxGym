@@ -11,7 +11,6 @@ create table s3file (
 
 alter table s3file add constraint fk_s3file_userProfile_2 foreign key (user_profile_id) references user_profile (id);
 create index ix_s3file_userProfile_2 on s3file (user_profile_id);
-
 # --- !Downs
 
 drop table if exists s3file cascade;

@@ -34,6 +34,15 @@ create table recurring_product (
   constraint pk_recurring_product primary key (id))
 ;
 
+create table s3file (
+  id                        varchar(40) not null,
+  user_profile_id           bigint,
+  bucket                    varchar(255),
+  name                      varchar(255),
+  constraint uq_s3file_1 unique (user_profile),
+  constraint pk_s3file primary key (id))
+;
+
 create table security_role (
   id                        bigint not null,
   role_name                 varchar(255),
@@ -176,18 +185,20 @@ create sequence user_recurring_purchase_item_seq;
 
 alter table linked_account add constraint fk_linked_account_user_1 foreign key (user_id) references users (id);
 create index ix_linked_account_user_1 on linked_account (user_id);
-alter table token_action add constraint fk_token_action_targetUser_2 foreign key (target_user_id) references users (id);
-create index ix_token_action_targetUser_2 on token_action (target_user_id);
-alter table user_counter_purchase add constraint fk_user_counter_purchase_user_3 foreign key (user_id) references users (id);
-create index ix_user_counter_purchase_user_3 on user_counter_purchase (user_id);
-alter table user_counter_purchase_item add constraint fk_user_counter_purchase_item__4 foreign key (purchase_id) references user_counter_purchase (id);
-create index ix_user_counter_purchase_item__4 on user_counter_purchase_item (purchase_id);
-alter table user_recurring_purchase add constraint fk_user_recurring_purchase_use_5 foreign key (user_id) references users (id);
-create index ix_user_recurring_purchase_use_5 on user_recurring_purchase (user_id);
-alter table user_recurring_purchase add constraint fk_user_recurring_purchase_pro_6 foreign key (product_id) references recurring_product (id);
-create index ix_user_recurring_purchase_pro_6 on user_recurring_purchase (product_id);
-alter table user_recurring_purchase_item add constraint fk_user_recurring_purchase_ite_7 foreign key (purchase_id) references user_recurring_purchase (id);
-create index ix_user_recurring_purchase_ite_7 on user_recurring_purchase_item (purchase_id);
+alter table s3file add constraint fk_s3file_userProfile_2 foreign key (user_profile_id) references user_profile (id);
+create index ix_s3file_userProfile_2 on s3file (user_profile_id);
+alter table token_action add constraint fk_token_action_targetUser_3 foreign key (target_user_id) references users (id);
+create index ix_token_action_targetUser_3 on token_action (target_user_id);
+alter table user_counter_purchase add constraint fk_user_counter_purchase_user_4 foreign key (user_id) references users (id);
+create index ix_user_counter_purchase_user_4 on user_counter_purchase (user_id);
+alter table user_counter_purchase_item add constraint fk_user_counter_purchase_item__5 foreign key (purchase_id) references user_counter_purchase (id);
+create index ix_user_counter_purchase_item__5 on user_counter_purchase_item (purchase_id);
+alter table user_recurring_purchase add constraint fk_user_recurring_purchase_use_6 foreign key (user_id) references users (id);
+create index ix_user_recurring_purchase_use_6 on user_recurring_purchase (user_id);
+alter table user_recurring_purchase add constraint fk_user_recurring_purchase_pro_7 foreign key (product_id) references recurring_product (id);
+create index ix_user_recurring_purchase_pro_7 on user_recurring_purchase (product_id);
+alter table user_recurring_purchase_item add constraint fk_user_recurring_purchase_ite_8 foreign key (purchase_id) references user_recurring_purchase (id);
+create index ix_user_recurring_purchase_ite_8 on user_recurring_purchase_item (purchase_id);
 
 
 
@@ -206,6 +217,8 @@ drop table if exists counter_product cascade;
 drop table if exists linked_account cascade;
 
 drop table if exists recurring_product cascade;
+
+drop table if exists s3file cascade;
 
 drop table if exists security_role cascade;
 

@@ -131,11 +131,13 @@
             <button type="submit" class="btn btn-default">Gem</button>
     	}
 
-        <h1>Upload a file:</h1>
+        <hr/>
+        <h5>Upload billede på dej selv</h5>
         @helper.form(action = routes.S3FileController.uploadUserImage, 'enctype -> "multipart/form-data") {
-            <input type="file" name="upload">
-            <input type="submit">
+            <input type="file" name="upload">&nbsp;<input type="submit" class="btn btn-default">
         }
+    <br/>
+    <image height="200" src="@controllers.UserProfileController.userProfileImageUrl()"  />
 
   </div>
 

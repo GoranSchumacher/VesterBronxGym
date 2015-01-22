@@ -15,6 +15,7 @@ import views.html.signup;
 import views.html.userProfile;
 import views.html.*;
 
+import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -142,6 +143,17 @@ public class UserProfileController extends Controller {
             userProfile = UserProfile.findByUser(localUser);
         } catch(Exception e) {}
         return userProfile;
+    }
+
+    @Restrict(@Group(Application.USER_ROLE))
+    public static String userProfileImageUrl() {
+        UserProfile userProfile = getUserProfileFromLoggedInUser();
+        try {
+            return userProfile.userImage().getUrl().toString();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static Result viewUsers() {

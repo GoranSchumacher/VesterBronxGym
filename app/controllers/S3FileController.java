@@ -58,6 +58,7 @@ public class S3FileController extends Controller {
             return notFound("User not logged in");
         }
 
+        S3File.findByUserProfile(userProfile).delete();
 
         Http.MultipartFormData body = request().body().asMultipartFormData();
         Http.MultipartFormData.FilePart uploadFilePart = body.getFile("upload");
