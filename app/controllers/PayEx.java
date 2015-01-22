@@ -132,8 +132,8 @@ public class PayEx extends Controller {
         //response().setContentType("text/html");
         //response().setHeader("Location", redirectUrl);
 
-        return redirect(redirectUrl);
-        //return seeOther(redirectUrl);
+        //return redirect(redirectUrl);
+        return seeOther(redirectUrl);
         //return found(redirectUrl);
         //php: header('Location: '.$redirectUrl);
         //return temporaryRedirect(redirectUrl);
