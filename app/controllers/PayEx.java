@@ -14,6 +14,7 @@ import play.Play;
 import play.libs.F;
 import play.libs.XPath;
 import play.libs.ws.WS;
+import play.libs.ws.WSCookie;
 import play.libs.ws.WSRequestHolder;
 import play.libs.ws.WSResponse;
 import play.mvc.Controller;
@@ -269,6 +270,11 @@ public class PayEx extends Controller {
                                 for(String header : headerL) {
                                     Logger.debug("    Header: " + header);
                                 }
+                            }
+                            List<WSCookie> cookies = response.getCookies();
+
+                            for(WSCookie cookie : cookies) {
+                                Logger.debug("    Cookie: " + cookie.toString());
                             }
                             Document xml = response.asXml();
                             Node xml2 = xml.getChildNodes().item(0).getChildNodes().item(0);
