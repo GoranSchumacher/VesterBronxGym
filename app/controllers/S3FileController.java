@@ -73,7 +73,7 @@ public class S3FileController extends Controller {
             s3File.name = uploadFilePart.getFilename();
             s3File.file = uploadFilePart.getFile();
             s3File.save();
-            return ok();
+            return redirect(routes.Application.index());
         }
         else {
             return badRequest("File upload error");
