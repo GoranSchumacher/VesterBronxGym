@@ -112,19 +112,33 @@ public class UserProfileController extends Controller {
     }
 
     public static boolean hasProfile() {
-        final User localUser = Application.getLocalUser(session());
-        if(localUser == null) {
-            return false;
-        }
-        models.UserProfile userProfile = null;
-        try {
-            userProfile = models.UserProfile.findByUser(localUser);
-        } catch(Exception e) {}
+        UserProfile userProfile = getUserProfileFromLoggedInUser();
         if(userProfile == null) {
             return false;
         }
         return true;
     }
+
+    public static boolean hasProfileAndAcceptedTerms() {
+        UserProfile userProfile = getUserProfileFromLoggedInUser();
+        if(userProfile == null) {
+            return false;
+        }
+        return userProfile.acceptedTerms.equalsIgnoreCase("A");
+    }
+
+    private static UserProfile getUserProfileFromLoggedInUser() {
+        final User localUser = Application.getLocalUser(session());
+        if(localUser == null) {
+            return null;
+        }
+        UserProfile userProfile = null;
+        try {
+            userProfile = UserProfile.findByUser(localUser);
+        } catch(Exception e) {}
+        return userProfile;
+    }
+
 
     private static void moveFromUserProfileFormToEntity(Form<models.UserProfile> filledForm, models.UserProfile userProfile) {
         userProfile.sex = filledForm.get().sex;

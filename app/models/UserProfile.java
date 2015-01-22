@@ -54,9 +54,9 @@ public class UserProfile extends Model{
     @Column(length = 20)
     public String country;
     @Column(length = 1)
-    public String acceptedTerms;
+    public String acceptedTerms;    // A - Accepted, F - Not accepted
     @Column(length = 1)
-    public String contactPermission;
+    public String contactPermission;    // A - Can contact, F - No contact
     @Constraints.MaxLength(20)
     @Column(length = 20)
     public String payexAgreementId;

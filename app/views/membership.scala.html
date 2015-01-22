@@ -3,7 +3,17 @@
 @main("Medlemskab", "membership") {
     
     <h1>Medlemskab</h1>
-    <p>
-        Køb medlemskab ved at betale på PayEx <a target ="_new" href="/test/39900/8000/1234/98765/Enfedprodukt3">her!</a>
-    </p>
+    @if(controllers.UserProfileController.hasProfileAndAcceptedTerms) {
+        <p>
+            Køb medlemskab ved at betale på PayEx <a target ="_new" href="/test/39900/8000/1234/98765/Enfedprodukt3">
+            her!</a>
+        </p>
+    } else {
+        <p>
+            Du har ikke accepteret medlems betingelserne.<br/>
+            Gør det på <a href="@routes.UserProfileController.userProfile">
+            Bruger Profil siden</a>, før du kan købe dit medlemskab!
+        </p>
+
+    }
 }
