@@ -63,6 +63,7 @@ GET         /viewUsers                                                    contro
 ### Amazon AWS Image server Controller
 GET         /listImages                                                   controllers.S3FileController.viewImages()
 POST        /postImage                                                    controllers.S3FileController.upload()
+POST        /postUserImage                                                controllers.S3FileController.uploadUserImage()
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                                                 controllers.Assets.at(path="/public", file)
