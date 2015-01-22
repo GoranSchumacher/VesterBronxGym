@@ -144,7 +144,8 @@ public class PayEx extends Controller {
                 .setTimeout(10000)
                 .setContentType("application/x-www-form-urlencoded");
 
-        String returnUrl = routes.PayEx.initialize8ReturnUrlCalled("NotSetYet").absoluteURL(request());
+        //String returnUrl = routes.PayEx.initialize8ReturnUrlCalled("NotSetYet").absoluteURL(request());
+        String returnUrl = "https://vesterbronxgym.herokuapp.com/initialize8ReturnUrlCalled";
         returnUrl = returnUrl.replaceFirst("http://", "https://");
         Logger.debug("returnUrl: " + returnUrl);
         String cancelUrl = routes.PayEx.initialize8CancelUrlCalled().absoluteURL(request());
@@ -232,8 +233,11 @@ public class PayEx extends Controller {
 
     public static Result initialize8ReturnUrlCalled(String orderRef) {
         return ok("returnUrl called with orderRef: " + orderRef);
-
     }
+/*
+    public static Result initialize8ReturnUrlCalled() {
+        return ok("returnUrl called with orderRef: ");
+    }*/
 
     public static Result initialize8CancelUrlCalled() {
         return ok("cancelUrl called!!!");

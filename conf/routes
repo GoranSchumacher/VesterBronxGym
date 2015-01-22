@@ -50,7 +50,7 @@ GET         /createAgreement/:description                                 contro
 ## Long price, Integer vat, String, String orderID, String productNumber, String description
 ## http://localhost:9000/test/399/80/1234/98765/Enfedprodukt
 GET         /test/:price/:vat/:orderId/:productNumber/:description        controllers.PayEx.createAgreement3ANDInitialize8(price : Long, vat : Int, orderId, productNumber, description)
-GET         /initialize8ReturnUrlCalled                                   controllers.PayEx.initialize8ReturnUrlCalled(orderRef)
+GET         /initialize8ReturnUrlCalled                                   controllers.PayEx.initialize8ReturnUrlCalled(orderRef ?= "NotSetYet")
 GET         /initialize8CancelUrlCalled                                   controllers.PayEx.initialize8CancelUrlCalled()
 GET         /membership                                                   controllers.PayEx.membership()
 
