@@ -52,7 +52,8 @@ public class PayEx extends Controller {
     private static String PAYEX_PURCHASE_OPERATION = PAYEX_CONFIGURATION.getString("purchaseOperation");
     private static String PAYEX_MAXAMOUNT = PAYEX_CONFIGURATION.getString("maxAmount");
     private static String PAYEX_ENCRYPTIONKEY = PAYEX_CONFIGURATION.getString("encryptionKey");
-    private static String PAYEX_TEST_BASE_URL = "https://test-external.payex.com";
+    //private static String PAYEX_TEST_BASE_URL = "https://test-external.payex.com";
+    private static String PAYEX_TEST_BASE_URL = PAYEX_CONFIGURATION.getString("test_base_url");
     private static String PAYEX_CURRENCY = PAYEX_CONFIGURATION.getString("currency");
     //private static String PAYEX_INITIALIZE_RETURNURL = PAYEX_CONFIGURATION.getString("initialize_returnurl");
     //private static String PAYEX_INITIALIZE_CANCELURL = PAYEX_CONFIGURATION.getString("initialize_cancelurl");
@@ -144,8 +145,10 @@ public class PayEx extends Controller {
                 .setContentType("application/x-www-form-urlencoded");
 
         String returnUrl = routes.PayEx.initialize8ReturnUrlCalled("NotSetYet").absoluteURL(request());
+        returnUrl = returnUrl.replaceFirst("http://", "https://");
         Logger.debug("returnUrl: " + returnUrl);
         String cancelUrl = routes.PayEx.initialize8CancelUrlCalled().absoluteURL(request());
+        cancelUrl = cancelUrl.replaceFirst("http://", "https://");
         Logger.debug("cancelUrl: " + cancelUrl);
 
         String hash = getHash(PAYEX_ACCOUNTNO+PAYEX_PURCHASE_OPERATION+price+"" + PAYEX_CURRENCY + vat + orderID + productNumber +
