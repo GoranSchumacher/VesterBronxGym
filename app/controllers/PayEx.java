@@ -34,6 +34,9 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Map;
+
 import views.html.*;
 
 /**
@@ -261,6 +264,12 @@ public class PayEx extends Controller {
                     new F.Function<WSResponse, Node>() {
                         public Node apply(WSResponse response) {
                             //Logger.debug(response.getBody().toString());
+                            Map<String, List<String>> headers = response.getAllHeaders();
+                            for(List<String> headerL : headers.values()) {
+                                for(String header : headerL) {
+                                    Logger.debug(header);
+                                }
+                            }
                             Document xml = response.asXml();
                             Node xml2 = xml.getChildNodes().item(0).getChildNodes().item(0);
                             return xml2;
