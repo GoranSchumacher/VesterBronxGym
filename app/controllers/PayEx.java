@@ -130,7 +130,7 @@ public class PayEx extends Controller {
 
         // Here we should redirect
         //response().setContentType("text/html");
-        //response().setHeader("Location", redirectUrl);
+        response().setHeader("Location", redirectUrl);
 
         //return redirect(redirectUrl);
         //return seeOther(redirectUrl);
