@@ -1,0 +1,23 @@
+@import helper._
+
+@main("Bruger Profil","userProfile") {
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-8">
+      <h1>Bruger profil</h1>
+    </div>
+  </div>
+
+  <div id="userProfile" class="row">
+
+      <image height="200" src="@controllers.UserProfileController.userProfileImageUrl()"  />
+      <p/>
+      <hr/>
+      <h5>Upload billede på dej selv</h5>
+        @helper.form(action = routes.S3FileController.uploadUserImage, 'enctype -> "multipart/form-data") {
+            <input type="file" name="upload">&nbsp;<input type="submit" class="btn btn-default">
+        }
+
+  </div>
+
+}

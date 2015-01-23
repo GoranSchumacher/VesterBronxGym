@@ -59,6 +59,7 @@ GET         /membership                                                   contro
 GET         /userProfile                                                  controllers.UserProfileController.userProfile()
 POST        /userProfile/change                                           controllers.UserProfileController.doUserProfile()
 GET         /viewUsers                                                    controllers.UserProfileController.viewUsers()
+GET         /userProfilePicture                                           controllers.UserProfileController.userProfilePicture()
 
 ### Amazon AWS Image server Controller
 GET         /listImages                                                   controllers.S3FileController.viewImages()

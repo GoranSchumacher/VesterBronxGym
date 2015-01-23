@@ -12,6 +12,12 @@
 
   <div id="userProfile" class="row">
 
+      <a href="@routes.UserProfileController.userProfilePicture">
+        <image height="200" src="@controllers.UserProfileController.userProfileImageUrl()"  />
+      </a>
+      <p/>
+      <hr/>
+
         @* Display proprietary login form *@
     	@helper.form(routes.UserProfileController.doUserProfile, 'class -> "form-horizontal", 'role -> "form") {
 
@@ -130,14 +136,6 @@
             </div>
             <button type="submit" class="btn btn-default">Gem</button>
     	}
-
-        <hr/>
-        <h5>Upload billede på dej selv</h5>
-        @helper.form(action = routes.S3FileController.uploadUserImage, 'enctype -> "multipart/form-data") {
-            <input type="file" name="upload">&nbsp;<input type="submit" class="btn btn-default">
-        }
-    <br/>
-    <image height="200" src="@controllers.UserProfileController.userProfileImageUrl()"  />
 
   </div>
 

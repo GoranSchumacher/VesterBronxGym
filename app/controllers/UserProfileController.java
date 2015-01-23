@@ -24,6 +24,7 @@ import java.util.UUID;
 import static play.data.Form.form;
 
 /**
+ * Example from link: https://devcenter.heroku.com/articles/using-amazon-s3-for-file-uploads-with-java-and-play-2
  * @author Gøran Schumacher (GS) / Schumacher Consulting Aps
  * @version $Revision$ 18/01/15
  */
@@ -115,6 +116,20 @@ public class UserProfileController extends Controller {
             }
             return redirect(routes.Application.index());
         }
+    }
+
+    @Restrict(@Group(Application.USER_ROLE))
+    public static Result userProfilePicture() {
+        final User localUser = Application.getLocalUser(session());
+        models.UserProfile userProfile = null;
+        try {
+            userProfile = models.UserProfile.findByUser(localUser);
+        } catch(Exception e) {}
+        /*Form<models.UserProfile> filledForm = USERPROFILE_FORM;
+        if(userProfile != null) {
+            filledForm = USERPROFILE_FORM.fill(userProfile);
+        }*/
+        return ok(views.html.userProfilePicture.render());
     }
 
     public static boolean hasProfile() {
