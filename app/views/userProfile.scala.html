@@ -13,7 +13,11 @@
   <div id="userProfile" class="row">
 
       <a href="@routes.UserProfileController.userProfilePicture">
-        <image height="200" src="@controllers.UserProfileController.userProfileImageUrl()"  />
+        @if(controllers.UserProfileController.userProfileImageUrl() != null) {
+            <image height="200" src="@controllers.UserProfileController.userProfileImageUrl()" />
+        } else {
+          Upload Profil Billede
+        }
       </a>
       <p/>
       <hr/>
