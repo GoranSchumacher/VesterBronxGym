@@ -163,7 +163,7 @@ public class UserProfileController extends Controller {
     @Restrict(@Group(Application.USER_ROLE))
     public static String userProfileImageUrl() {
         UserProfile userProfile = getUserProfileFromLoggedInUser();
-        if(userProfile.userImage()==null) {
+        if((userProfile == null) || (userProfile.userImage()==null)) {
             return null;
         }
         try {
