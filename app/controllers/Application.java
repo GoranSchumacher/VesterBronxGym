@@ -28,6 +28,7 @@ public class Application extends Controller {
 	public static final String FLASH_ERROR_KEY = "error";
 	public static final String USER_ROLE = "user";
     public static final String USERPROFILE_ROLE = "userProfile";
+    public static final String ADMIN_ROLE = "userAdmin";
 	
 	public static Result index() {
 		return ok(index.render());

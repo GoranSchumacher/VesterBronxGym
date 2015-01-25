@@ -56,6 +56,10 @@
                                 <li class="@("active".when(nav == "membership"))"><a href="@routes.PayEx.membership">
                                     Medlemskab</a></li>
                             }
+                            @if(controllers.UserProfileController.hasRole(Application.ADMIN_ROLE)) {
+                                <li class="@("active".when(nav == "membership"))"><a href="@routes.PayEx.membership">
+                                    ADMIN</a></li>
+                            }
                         }
                     </ul>
 

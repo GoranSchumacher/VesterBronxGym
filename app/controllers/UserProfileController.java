@@ -1,11 +1,14 @@
 package controllers;
 
+import be.objectify.deadbolt.core.models.Role;
 import be.objectify.deadbolt.java.actions.Group;
 import be.objectify.deadbolt.java.actions.Restrict;
 import models.S3File;
 import models.SecurityRole;
 import models.User;
 import models.UserProfile;
+import play.Configuration;
+import play.Play;
 import play.data.Form;
 import play.db.ebean.Model;
 import play.mvc.Controller;
@@ -29,6 +32,10 @@ import static play.data.Form.form;
  * @version $Revision$ 18/01/15
  */
 public class UserProfileController extends Controller {
+
+
+    private static Configuration SMTP_CONFIGURATION = Play.application().configuration().getConfig("smtp");
+    private static String SMTP_USER = SMTP_CONFIGURATION.getString("user");
 
     /*
     public static class UserProfile {
@@ -104,8 +111,24 @@ public class UserProfileController extends Controller {
                 userProfile.save();
 
                 // Add USERPROFILE_ROLE to user
-                localUser.roles.add(SecurityRole.findByRoleName(Application.USERPROFILE_ROLE));
-                localUser.save();
+                try {
+                    localUser.roles.add(SecurityRole.findByRoleName(Application.USERPROFILE_ROLE));
+                    localUser.save();} catch (Exception e){
+                    // Do nothing - Probably already added role.
+                }
+
+                // If email ends with smtp.user => Set role Admin
+                // Then the user is an employee of the Gym
+                String mailDomain = localUser.email.split("@")[1];
+                String gymDomain = SMTP_USER.split("@")[1];
+                if(gymDomain.equalsIgnoreCase(mailDomain)) {
+                    try {
+                        localUser.roles.add(SecurityRole.findByRoleName(Application.ADMIN_ROLE));
+                        localUser.save();
+                    } catch (Exception e){
+                        // Do nothing - Probably already added role.
+                    }
+                }
 
                 // Redirect to payment page
                 return redirect(routes.PayEx.membership());
@@ -146,6 +169,19 @@ public class UserProfileController extends Controller {
             return false;
         }
         return userProfile.acceptedTerms.equalsIgnoreCase("A");
+    }
+
+    public static boolean hasRole(String roleName) {
+        final User localUser = Application.getLocalUser(session());
+        if(localUser == null) {
+            return false;
+        }
+        for (Role role : localUser.getRoles()) {
+            if(role.getName().equalsIgnoreCase(roleName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static UserProfile getUserProfileFromLoggedInUser() {
