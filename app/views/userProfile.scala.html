@@ -79,14 +79,10 @@
             }
 -->
             <dl class=" " id="phone_field">
-
                 <dt><label for="phone">Telefon</label></dt>
-
                 <dd>
                     <input type="tel" id="phone" name="phone" value="@userProfileForm("phone").value"  />
                 </dd>
-
-
             </dl>
 
             <table style="width: auto;" class="table  table-striped  table-condensed">
@@ -99,6 +95,7 @@
                         )
                     </td>
                     <td>
+<!--
                         @inputText(
                             userProfileForm("streetNo"),
                             '_label -> "Nr",
@@ -106,6 +103,13 @@
                             '_type -> "number",
                             '_showConstraints -> false
                         )
+-->
+                        <dl class=" " id="streetNo">
+                            <dt><label for="streetNo">Nr</label></dt>
+                            <dd>
+                                <input type="number" id="streetNo" name="streetNo" value="@userProfileForm("streetNo").value"  />
+                            </dd>
+                        </dl>
                     </td>
                 </tr>
             </table>
@@ -121,12 +125,20 @@
             <table style="width: auto;" class="table  table-striped  table-condensed">
                 <tr>
                     <td>
+<!--
                         @inputText(
                             userProfileForm("zip"),
                             '_label -> "PostNr",
                             '_type -> "number",
                             '_showConstraints -> false
                         )
+-->
+                        <dl class=" " id="zip">
+                            <dt><label for="zip">Postnr</label></dt>
+                            <dd>
+                                <input type="number" id="zip" name="zip" value="@userProfileForm("zip").value"  />
+                            </dd>
+                        </dl>
                     </td>
                     <td>
                         @inputText(
