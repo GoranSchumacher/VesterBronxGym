@@ -47,6 +47,9 @@
                 '_type -> "tel",
                 '_showConstraints -> false
             )
+            @helper.input(userProfileForm("phone")) { (id, name, value, args) =>
+                <input type="tel" name="@name" id="@id" @toHtmlArgs(args)>
+            }
 
             <table style="width: auto;" class="table  table-striped  table-condensed">
                 <tr>
