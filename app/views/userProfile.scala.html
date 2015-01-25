@@ -44,6 +44,7 @@
             @inputText(
                 userProfileForm("phone"),
                 '_label -> "Telefon",
+                '_type -> "tel",
                 '_showConstraints -> false
             )
 
@@ -61,6 +62,7 @@
                             userProfileForm("streetNo"),
                             '_label -> "Nr",
                             'columns -> 5,
+                            '_type -> "number",
                             '_showConstraints -> false
                         )
                     </td>
@@ -81,6 +83,7 @@
                         @inputText(
                             userProfileForm("zip"),
                             '_label -> "PostNr",
+                            '_type -> "number",
                             '_showConstraints -> false
                         )
                     </td>
