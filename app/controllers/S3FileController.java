@@ -53,13 +53,14 @@ public class S3FileController extends Controller {
     @Restrict(@Group(Application.USER_ROLE))
     public static Result uploadUserImage() {
 
-        UserProfile userProfile = UserProfileController.getUserProfileFromLoggedInUser();
-        if(userProfile == null) {
+        final User localUser = Application.getLocalUser(session());
+        //UserProfile userProfile = UserProfileController.getUserProfileFromLoggedInUser();
+        if(localUser == null) {
             return notFound("User not logged in");
         }
 
         try {
-            S3File file = S3File.findByUserProfile(userProfile);
+            S3File file = S3File.findByUser(localUser);
             if (file != null) {
                 file.delete();
             }
@@ -69,7 +70,7 @@ public class S3FileController extends Controller {
         Http.MultipartFormData.FilePart uploadFilePart = body.getFile("upload");
         if (uploadFilePart != null) {
             S3File s3File = new S3File();
-            s3File.userProfile= userProfile;
+            s3File.user= localUser;
             s3File.name = uploadFilePart.getFilename();
             s3File.file = uploadFilePart.getFile();
             s3File.save();

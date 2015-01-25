@@ -17,7 +17,7 @@ import java.util.UUID;
  * Example from link: https://devcenter.heroku.com/articles/using-amazon-s3-for-file-uploads-with-java-and-play-2
  */
 @Entity
-@Table(name = "s3file", uniqueConstraints=@UniqueConstraint(columnNames={"user_profile"}))
+@Table(name = "s3file", uniqueConstraints=@UniqueConstraint(columnNames={"user"}))
 public class S3File extends Model {
 
     public static final Finder<Long, S3File> find = new Finder<Long, S3File>(
@@ -27,7 +27,7 @@ public class S3File extends Model {
     public UUID id;
 
     @OneToOne
-    public UserProfile userProfile;
+    public User user;
 
     private String bucket;
 
@@ -44,12 +44,12 @@ public class S3File extends Model {
         return id + "/" + name;
     }
 
-    public static S3File findByUserProfile(final UserProfile userProfile) {
-        return getUserProfileFind(userProfile).findUnique();
+    public static S3File findByUser(final User user) {
+        return getUserFind(user).findUnique();
     }
 
-    private static ExpressionList<S3File> getUserProfileFind(final UserProfile userProfile) {
-        return find.where().eq("user_profile_id", userProfile.id);
+    private static ExpressionList<S3File> getUserFind(final User user) {
+        return find.where().eq("user_id", user.id);
     }
 
     @Override

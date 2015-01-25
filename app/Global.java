@@ -71,6 +71,7 @@ public class Global extends GlobalSettings {
 	}
 
 	private void initialData() {
+
 		if (SecurityRole.find.findRowCount() == 0) {
 			for (final String roleName : Arrays
 					.asList(controllers.Application.USER_ROLE,

@@ -24,6 +24,17 @@ public class UserProfile extends Model{
 	@Id
 	public Long id;
 
+    @Constraints.Required
+    @Column(length = 10)
+    public String firstName;
+
+    @Column(length = 10)
+    public String middleName;
+
+    @Constraints.Required
+    @Column(length = 20)
+    public String lastName;
+
     @Column(length = 1)
 	public String sex;
     @Constraints.MaxLength(10)
@@ -60,7 +71,11 @@ public class UserProfile extends Model{
 
 
     public S3File userImage() {
-        return S3File.findByUserProfile(this);
+        User user = User.findByUserProfile(this);
+        if(user==null) {
+            return null;
+        }
+        return S3File.findByUser(user);
     }
 
     public static final Finder<Long, UserProfile> find = new Finder<Long, UserProfile>(
