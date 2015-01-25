@@ -65,18 +65,30 @@
                 '_error -> userProfileForm("sex").error.map(_.withMessage("Angiv køn")),
                 '_showConstraints -> false
             )
-
+<!--
             @inputText(
                 userProfileForm("phone"),
                 '_label -> "Telefon",
                 '_type -> "tel",
                 '_showConstraints -> false
             )
+-->
 <!--
             @helper.input(userProfileForm("phone")) { (id, name, value, args) =>
                 <input type="tel" name="@name" id="@id" @toHtmlArgs(args)>
             }
 -->
+            <dl class=" " id="phone_field">
+
+                <dt><label for="phone">Telefon</label></dt>
+
+                <dd>
+                    <input type="tel" id="phone" name="phone" value="@userProfileForm("phone").value"  />
+                </dd>
+
+
+            </dl>
+
             <table style="width: auto;" class="table  table-striped  table-condensed">
                 <tr>
                     <td>
