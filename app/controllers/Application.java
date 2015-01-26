@@ -74,6 +74,7 @@ public class Application extends Controller {
 	}
 
 	public static Result signup() {
+        com.feth.play.module.pa.controllers.Authenticate.logout();
 		return ok(signup.render(MyUsernamePasswordAuthProvider.SIGNUP_FORM));
 	}
 
