@@ -31,7 +31,11 @@ public class Application extends Controller {
     public static final String ADMIN_ROLE = "userAdmin";
 	
 	public static Result index() {
-		return ok(index.render());
+        if(UserProfileController.hasProfile()) {
+            return ok(index.render());
+        } else {
+            return redirect(routes.UserProfileController.userProfile());
+        }
 	}
 
 	public static User getLocalUser(final Session session) {
