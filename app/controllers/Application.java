@@ -74,6 +74,7 @@ public class Application extends Controller {
 	}
 
 	public static Result signup() {
+        com.feth.play.module.pa.controllers.Authenticate.logout();
         //session().remove(com.feth.play.module.pa.PlayAuthenticate.ORIGINAL_URL);
         session().remove("pa.url.orig");
 		return ok(signup.render(MyUsernamePasswordAuthProvider.SIGNUP_FORM));
