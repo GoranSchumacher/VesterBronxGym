@@ -68,6 +68,13 @@ public class MyUsernamePasswordAuthProvider
 		@Email
 		public String email;
 
+        public String validate() {
+            if (email != null) {
+                email = email.toLowerCase();
+            }
+            return null;
+        }
+
 	}
 
 	public static class MyLogin extends MyIdentity
@@ -87,6 +94,13 @@ public class MyUsernamePasswordAuthProvider
 		public String getPassword() {
 			return password;
 		}
+
+        public String validate() {
+            if (email != null) {
+                email = email.toLowerCase();
+            }
+            return null;
+        }
 	}
 
 	public static class MySignup extends MyLogin {
@@ -99,6 +113,9 @@ public class MyUsernamePasswordAuthProvider
 		//public String name;
 
 		public String validate() {
+            if(email != null) {
+                email = email.toLowerCase();
+            }
 			if (password == null) {
             //if (password == null || !password.equals(repeatPassword)) {
 				return Messages
